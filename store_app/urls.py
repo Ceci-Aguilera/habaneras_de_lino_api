@@ -10,4 +10,5 @@ urlpatterns = [
 	url(r'^products/$',ProductListView.as_view(),name='products-list-view'),
 	url(r'^products/(?P<id>[0-9]+)/$', ProductDetailView.as_view(), name='products-detail-api'),
 	url(r'^cart/$',CartView.as_view(),name='cart-view'),
+	url(r'^cart/delete-product/(?P<id>[0-9]+)/$', CartView.as_view(), name='delete-product-api'),
 ]

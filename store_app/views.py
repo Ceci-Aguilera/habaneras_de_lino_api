@@ -72,7 +72,7 @@ class CartView(APIView):
 
 		try:
 			cart = Cart.objects.get(ip_address = ipaddress, last=True)
-			cart = CartSerializer(cart).data
+			cart = CartSerializer(cart, context={"request": request}).data
 			return Response({"Cart": cart}, status=status.HTTP_200_OK)
 		except:
 			return Response({"Cart":"Error"}, status=status.HTTP_400_BAD_REQUEST)
@@ -113,3 +113,12 @@ class CartView(APIView):
 
 		else:
 			return Response({"Cart": "Error"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+	def delete(self, request, id, format=None):
+		product = ProductVariation.objects.get(id = id)
+		cart = product.cart
+		cart = CartSerializer(cart, context={"request": request}).data
+		product.delete()
+		return Response({"Cart": cart}, status=status.HTTP_200_OK)
