@@ -94,7 +94,7 @@ class CartView(APIView):
 		except:
 			cart = Cart(ip_address = ipaddress, cost = 0, last = True)
 
-		product_serializer = ProductVariationSimpleSerializer(data=data)
+		product_serializer = ProductVariationSimpleSerializer(data=data, context={"request": request})
 		if product_serializer.is_valid():
 			
 			product = product_serializer.save()
@@ -107,7 +107,7 @@ class CartView(APIView):
 			cart.save()
 			product.cart = cart
 			product.save()
-			cart = CartSerializer(cart).data
+			cart = CartSerializer(cart, context={"request": request}).data
 
 			return Response({"Cart":cart}, status=status.HTTP_200_OK)
 
