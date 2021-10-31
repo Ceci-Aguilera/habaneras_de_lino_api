@@ -116,6 +116,33 @@ class CartView(APIView):
 
 
 
+class ProductVariationListView(ListAPIView):
+    authentication_classes = []
+    serializer_class = ProductVariationSerializer
+    model = ProductVariation
+    queryset = ProductVariation.objects.all()
+
+
+
+class ProductVariationView(APIView):
+
+	def get(self, request, id, format=None):
+		product = ProductVariation.objects.get(id = id)
+		product = ProductVariationSerializer(product, context={"request":request}).data
+		return Response({"Product": product}, status=status.HTTP_200_OK)
+
+	def post(self, request, id, format=None):
+		data = request.data
+		original_product = ProductVariation.objects.get(id=id)
+		product = ProductVariationSimpleSerializer(original_product, data=data, context={"request":request}, partial=True)
+		if product.is_valid():
+			product = product.save()
+			return Response({"Product": "Successfuly updated"}, status=status.HTTP_200_OK)
+		else:
+			print(product.errors)
+			return Response({"Product": product.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+
 	def delete(self, request, id, format=None):
 		product = ProductVariation.objects.get(id = id)
 		cart = product.cart

@@ -37,7 +37,7 @@ class ProductVariationSimpleSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = ProductVariation
-		fields = ("cant", 'price', 'clothing_s')
+		fields = ("cant", 'price', 'clothing_s', 'id')
 # ======================================================================================
 class ProductVariationSerializer(serializers.ModelSerializer):
 
