@@ -13,4 +13,5 @@ urlpatterns = [
 	url(r'^cart/delete-product/(?P<id>[0-9]+)/$', ProductVariationView.as_view(), name='delete-product-api'),
 	url(r'^custom-products/$',ProductVariationListView.as_view(),name='custom-products-list-view'),
 	url(r'^custom-products/(?P<id>[0-9]+)/$', ProductVariationView.as_view(), name='custom-products-detail-api'),
+	url(r'^order/$', CheckoutView.as_view(), name='checkout-detail-api'),
 ]
