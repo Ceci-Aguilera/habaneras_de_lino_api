@@ -105,24 +105,20 @@ class CartView(APIView):
 
 			try:
 				cart_product = ProductVariation.objects.get(product = product.product, cart = cart, cart__last=True)
-				if cart_product.clothing_s == product.clothing_s:
-					print("1")
+				if (cart_product.clothing_s == product.clothing_s) and (cart_product.size_of_sleeve == product.size_of_sleeve) and (cart_product.fit == product.fit):
 					cart_product.cant += product.cant
 					cart_product.price += product.price
-					print(product.price)
 					cart_product.save()
 					cart.cost += product.price
 					cart.save()
 					product.delete()
 				else:
-					print("2")
 					cart.cost += product.price
 					cart.save()
 					product.cart = cart
 					product.save()
 
 			except:
-				print("3")
 				cart.cost += product.price
 				cart.save()
 				product.cart = cart
@@ -177,7 +173,6 @@ class ProductVariationView(APIView):
 			cart = CartSerializer(cart, context={"request": request}).data
 			return Response({"Cart": cart}, status=status.HTTP_200_OK)
 		else:
-			print(product.errors)
 			return Response({"Cart": None}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -206,7 +201,6 @@ class CheckoutView(APIView):
 			cart = Cart.objects.get(ip_address = ipaddress, last=True)
 			order = Order.objects.create(cart=cart)
 
-			print(order)
 			order_serializer = OrderSerializer(order, data=request.data['order'], partial=True)
 
 			order_serializer.is_valid(raise_exception=True)

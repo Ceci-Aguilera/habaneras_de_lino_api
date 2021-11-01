@@ -37,6 +37,8 @@ class ProductVariation(models.Model):
 	cart = models.ForeignKey(Cart, null=True, on_delete=models.CASCADE, related_name="product_variation_set")
 	price = models.FloatField(default=0)
 	clothing_s = models.CharField(max_length=256, default="S")
+	size_of_sleeve = models.CharField(max_length=256, default="Corta")
+	fit = models.CharField(max_length=256, default="Regular Fit")
 
 	def __str__(self):
 		if self.product is not None:
