@@ -103,10 +103,31 @@ class CartView(APIView):
 			product.cart = None
 			product.save()
 
-			cart.cost += product.price
-			cart.save()
-			product.cart = cart
-			product.save()
+			try:
+				cart_product = ProductVariation.objects.get(product = product.product, cart = cart, cart__last=True)
+				if cart_product.clothing_s == product.clothing_s:
+					print("1")
+					cart_product.cant += product.cant
+					cart_product.price += product.price
+					print(product.price)
+					cart_product.save()
+					cart.cost += product.price
+					cart.save()
+					product.delete()
+				else:
+					print("2")
+					cart.cost += product.price
+					cart.save()
+					product.cart = cart
+					product.save()
+
+			except:
+				print("3")
+				cart.cost += product.price
+				cart.save()
+				product.cart = cart
+				product.save()
+
 			cart = CartSerializer(cart, context={"request": request}).data
 
 			return Response({"Cart":cart}, status=status.HTTP_200_OK)
@@ -152,10 +173,12 @@ class ProductVariationView(APIView):
 		product = ProductVariationSimpleSerializer(original_product, data=data, context={"request":request}, partial=True)
 		if product.is_valid():
 			product = product.save()
-			return Response({"Product": "Successfuly updated"}, status=status.HTTP_200_OK)
+			cart = product.cart
+			cart = CartSerializer(cart, context={"request": request}).data
+			return Response({"Cart": cart}, status=status.HTTP_200_OK)
 		else:
 			print(product.errors)
-			return Response({"Product": product.errors}, status=status.HTTP_400_BAD_REQUEST)
+			return Response({"Cart": None}, status=status.HTTP_400_BAD_REQUEST)
 
 
 	def delete(self, request, id, format=None):
