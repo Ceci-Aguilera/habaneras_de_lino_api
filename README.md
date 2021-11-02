@@ -92,3 +92,4 @@ The models: __product__, __category__, and __order__ do what they are expected t
 2. Add basic statistics to the admin panel.
 3. Create subcategories, for example, a category can be camisas and a subcategory can be guayaberas or guayamisas. Find how to modify this in product variations.
 4. Create Users (Admins and Staff). Admins can modify content while staff can only view it.
+5. Create send email templates.

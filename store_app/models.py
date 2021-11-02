@@ -6,6 +6,7 @@ class Product(models.Model):
 	title = models.CharField(max_length=256, default='')
 	price = models.FloatField(default=0.0)
 	image = models.ImageField(upload_to='uploads/products/')
+	amount_sold = models.IntegerField(default=0)
 
 	def __str__(self):
 		return self.title
