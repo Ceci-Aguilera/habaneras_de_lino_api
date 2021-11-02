@@ -12,6 +12,7 @@ from django.utils.encoding import force_bytes
 
 import json
 from datetime import datetime
+from random import randint
 
 from rest_framework.response import Response
 from rest_framework import status
@@ -94,9 +95,8 @@ class CartView(APIView):
 		try:
 			cart = Cart.objects.get(ip_address = ipaddress, last=True, token=token)
 		except:
-			cart = Cart(ip_address = ipaddress, cost = 0, last = True)
-			token = urlsafe_base64_encode(force_bytes(cart.pk))
-			cart.token = token
+			token = urlsafe_base64_encode(force_bytes(randint(1,999999)))
+			cart = Cart(ip_address = ipaddress, cost = 0, last = True, token=token)
 			cart.save()
 
 		product_serializer = ProductVariationSimpleSerializer(data=data, context={"request": request})
