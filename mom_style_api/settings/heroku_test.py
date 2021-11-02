@@ -27,10 +27,10 @@ DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'd2ogscp4tbudaf',
-        'USER': 'eeklkdmvimbrcc',
-        'PASSWORD': '969ab031e3af90c4b7260b1448cff4d80e786103c7485081b8f70c31b1ed58dc',
-        'HOST': 'ec2-54-211-160-34.compute-1.amazonaws.com',
+        'NAME': os.environ["DB_NAME"],
+        'USER': os.environ["DB_USER"],
+        'PASSWORD': os.environ["DB_PASSWORD"],
+        'HOST': os.environ["DB_HOST"],
         'PORT': 5432,
     }
 }
