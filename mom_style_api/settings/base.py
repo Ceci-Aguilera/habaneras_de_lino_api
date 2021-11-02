@@ -22,7 +22,7 @@ TEMPLATES_DIR = os.path.join(ROOT_BASE_DIR,'templates')
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['guayabera-style-api.herokuapp.com']
 
 
 # Application definition
