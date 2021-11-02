@@ -7,7 +7,7 @@ from .base import *
 django_on_heroku.settings(locals())
 
 
-DEBUG = False
+DEBUG = True
 
 SECRET_KEY= os.environ["SECRET_KEY"]
 
