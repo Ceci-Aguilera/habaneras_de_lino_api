@@ -23,9 +23,13 @@ CLOUDINARY_STORAGE = {
     'API_SECRET': os.environ['CLOUD_API_SECRET'],
 }
 
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+# STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
+
+
 
 DATABASES = {
     'default': {
