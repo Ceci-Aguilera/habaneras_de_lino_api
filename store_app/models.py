@@ -27,9 +27,10 @@ class Cart(models.Model):
 	ip_address = models.GenericIPAddressField()
 	cost = models.FloatField(default=0)
 	last = models.BooleanField(default=False)
+	token = models.CharField(max_length=256, default='-1')
 
 	def __str__(self):
-		return self.ip_address
+		return self.ip_address + " - " + self.token
 
 class ProductVariation(models.Model):
 	product = models.ForeignKey(Product, null=True, on_delete=models.SET_NULL)

@@ -53,7 +53,7 @@ class CartSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model= Cart
-		fields = ('ip_address', 'cost', 'last', 'products')
+		fields = ('ip_address', 'cost', 'last', 'products','token')
 
 # ======================================================================================
 

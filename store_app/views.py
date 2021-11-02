@@ -7,6 +7,8 @@ from django.utils import timezone
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 from django.core.mail import EmailMultiAlternatives
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes
 
 import json
 from datetime import datetime
@@ -60,39 +62,42 @@ class ProductDetailView(RetrieveAPIView):
 
 class CartView(APIView):
 
-	def get(self, request, format=None):
+	def get(self, request, token, format=None):
 		data = request.data
 
 		x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
 
 		if x_forwarded_for:
-			ipaddress = x_forwarded_for.split(',')[0].strip()
+			ipaddress = x_forwarded_for.split(',')[-1].strip()
 		else:
 			ipaddress = request.META.get('REMOTE_ADDR')
 
 		try:
-			cart = Cart.objects.get(ip_address = ipaddress, last=True)
+			cart = Cart.objects.get(ip_address = ipaddress, last=True, token = token)
 			cart = CartSerializer(cart, context={"request": request}).data
 			return Response({"Cart": cart}, status=status.HTTP_200_OK)
 		except:
 			return Response({"Cart":"Error"}, status=status.HTTP_400_BAD_REQUEST)
 
 
-	def post(self, request, format=None):
+	def post(self, request, format=None, token=None):
 		data = request.data
 
 
 		x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
 
 		if x_forwarded_for:
-			ipaddress = x_forwarded_for.split(',')[0].strip()
+			ipaddress = x_forwarded_for.split(',')[-1].strip()
 		else:
 			ipaddress = request.META.get('REMOTE_ADDR')
 
 		try:
-			cart = Cart.objects.get(ip_address = ipaddress, last=True)
+			cart = Cart.objects.get(ip_address = ipaddress, last=True, token=token)
 		except:
 			cart = Cart(ip_address = ipaddress, cost = 0, last = True)
+			token = urlsafe_base64_encode(force_bytes(cart.pk))
+			cart.token = token
+			cart.save()
 
 		product_serializer = ProductVariationSimpleSerializer(data=data, context={"request": request})
 		if product_serializer.is_valid():
@@ -131,16 +136,16 @@ class CartView(APIView):
 		else:
 			return Response({"Cart": "Error"}, status=status.HTTP_400_BAD_REQUEST)
 
-	def delete(self, request, format=None):
+	def delete(self, request, token, format=None):
 		x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
 
 		if x_forwarded_for:
-			ipaddress = x_forwarded_for.split(',')[0].strip()
+			ipaddress = x_forwarded_for.split(',')[-1].strip()
 		else:
 			ipaddress = request.META.get('REMOTE_ADDR')
 
 		try:
-			cart = Cart.objects.get(ip_address = ipaddress, last=True)
+			cart = Cart.objects.get(ip_address = ipaddress, last=True, token=token)
 			cart.delete()
 			return Response({"Cart":None}, status=status.HTTP_200_OK)
 		except:
@@ -188,17 +193,17 @@ class ProductVariationView(APIView):
 
 class CheckoutView(APIView):
 
-	def post(self, request, format=None):
+	def post(self, request, cart_token, format=None):
 
 		try:
 			x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
 
 			if x_forwarded_for:
-				ipaddress = x_forwarded_for.split(',')[0].strip()
+				ipaddress = x_forwarded_for.split(',')[-1].strip()
 			else:
 				ipaddress = request.META.get('REMOTE_ADDR')
 			
-			cart = Cart.objects.get(ip_address = ipaddress, last=True)
+			cart = Cart.objects.get(ip_address = ipaddress, last=True, token=cart_token)
 			order = Order.objects.create(cart=cart)
 
 			order_serializer = OrderSerializer(order, data=request.data['order'], partial=True)
