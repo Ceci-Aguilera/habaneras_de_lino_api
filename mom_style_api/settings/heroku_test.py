@@ -7,15 +7,15 @@ from .base import *
 django_on_heroku.settings(locals())
 
 
-DEBUG = True
+DEBUG = False
 
 SECRET_KEY= os.environ["SECRET_KEY"]
 
-CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ORIGIN_ALLOW_ALL = True
 
-# CORS_ALLOWED_ORIGINS = [
-#     # Frontend
-# ]
+CORS_ALLOWED_ORIGINS = [
+    "https://guayaberastyle.vercel.app/",
+]
 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.environ['CLOUD_NAME'],
