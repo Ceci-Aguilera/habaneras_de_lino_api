@@ -28,13 +28,14 @@ ALLOWED_HOSTS = ['guayabera-style-api.herokuapp.com']
 # Application definition
 
 INSTALLED_APPS = [
+	'whitenoise.runserver_nostatic',
+	'django.contrib.staticfiles',
 	'django.contrib.admin',
 	'django.contrib.auth',
 	'django.contrib.contenttypes',
 	'django.contrib.sessions',
 	'django.contrib.messages',
 	'cloudinary_storage',
-	'django.contrib.staticfiles',
 	'cloudinary',
 	'corsheaders',
 	'rest_framework',
@@ -44,6 +45,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
 	'django.middleware.security.SecurityMiddleware',
+	'whitenoise.middleware.WhiteNoiseMiddleware',
 	'django.contrib.sessions.middleware.SessionMiddleware',
 	'corsheaders.middleware.CorsMiddleware',
 	'django.middleware.common.CommonMiddleware',
@@ -124,7 +126,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIR = [os.path.join(ROOT_BASE_DIR,'staticfiles')]
 STATIC_ROOT = os.path.join(ROOT_BASE_DIR,'staticfiles')
-STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(ROOT_BASE_DIR, 'media')
