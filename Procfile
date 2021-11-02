@@ -1,1 +1,1 @@
-web: gunicorn mom_style_api.wsgi:application --log-file 
+web: gunicorn mom_style_api.wsgi:application --log-file -
