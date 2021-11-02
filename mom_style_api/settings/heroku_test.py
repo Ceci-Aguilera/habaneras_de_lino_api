@@ -14,7 +14,7 @@ SECRET_KEY= os.environ["SECRET_KEY"]
 # CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ALLOWED_ORIGINS = [
-    "https://guayaberastyle.vercel.app/",
+    "https://guayaberastyle.vercel.app",
 ]
 
 CLOUDINARY_STORAGE = {

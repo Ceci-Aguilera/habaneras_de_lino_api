@@ -1,1 +1,1 @@
-from .heroku_test import *
+from .test_heroku import *
