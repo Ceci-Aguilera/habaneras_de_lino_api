@@ -31,7 +31,8 @@ class Product(models.Model):
 	subtag = models.CharField(max_length=256, choices=SUBTAGS_CHOICES, default='ARRIBA')
 
 	def __str__(self):
-		return self.title + " - " + self.category.title + " - " + self.subtag 
+		return 'aaaa!'
+		# return self.title + " - " + self.category.title + " - " + self.subtag 
 
 
 
