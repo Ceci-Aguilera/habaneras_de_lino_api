@@ -140,7 +140,7 @@ class CartView(APIView):
 			return Response({"Cart": "Error"}, status=status.HTTP_400_BAD_REQUEST)
 
 
-	# Delete product from the cart
+	# Delete cart
 	def delete(self, request, token, format=None):
 		x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
 
@@ -151,11 +151,13 @@ class CartView(APIView):
 
 		try:
 			cart = Cart.objects.get(ip_address = ipaddress, last=True, token=token)
+			print("1")
 
 			products_from_cart = ProductVariation.objects.filter(cart__id=cart.id)
+			print("2")
 			for product_from_cart in products_from_cart:
-				products_from_cart.product.amount_sold -= product_from_cart.cant
-
+				product_from_cart.product.amount_sold -= product_from_cart.cant
+			print("3")
 			cart.delete()
 			return Response({"Cart":None}, status=status.HTTP_200_OK)
 		except:
@@ -183,17 +185,21 @@ class ProductVariationView(APIView):
 	def post(self, request, id, format=None):
 		data = request.data
 		original_product = ProductVariation.objects.get(id=id)
+		original_price = original_product.price
 		product = ProductVariationSimpleSerializer(original_product, data=data, context={"request":request}, partial=True)
 		if product.is_valid():
 			product = product.save()
 			cart = product.cart
+			cart.cost = cart.cost + (product.price - original_price)
+			cart.save()
+
 			cart = CartSerializer(cart, context={"request": request}).data
 			return Response({"Cart": cart}, status=status.HTTP_200_OK)
 		else:
 			return Response({"Cart": None}, status=status.HTTP_400_BAD_REQUEST)
 
 
-	# delete cart
+	# delete product from cart
 	def delete(self, request, id, format=None):
 		product = ProductVariation.objects.get(id = id)
 		cart = product.cart
