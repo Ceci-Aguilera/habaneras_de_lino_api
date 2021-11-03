@@ -2,19 +2,17 @@ from django.db import models
 
 # Create your models here.
 
-class Product(models.Model):
-	title = models.CharField(max_length=256, default='')
-	price = models.FloatField(default=0.0)
-	image = models.ImageField(upload_to='uploads/products/')
-	amount_sold = models.IntegerField(default=0)
-
-	def __str__(self):
-		return self.title
+# This is to know the props of the product variations
+SUBTAGS_CHOICES = (
+    ('ARRIBA', 'ARRIBA'),
+    ('ABAJO', 'ABAJO'),
+    ('VESTIDO', 'VESTIDO'),
+    ('ACCESORIO', 'ACCESORIO'),
+)
 
 
 class Category(models.Model):
 	title = models.CharField(max_length=256, default='')
-	products = models.ManyToManyField(Product, blank=True)
 	image = models.ImageField(upload_to='uploads/categories/', blank=True)
 
 	class Meta:
@@ -22,6 +20,19 @@ class Category(models.Model):
 
 	def __str__(self):
 		return self.title
+
+
+class Product(models.Model):
+	title = models.CharField(max_length=256, default='')
+	price = models.FloatField(default=0.0)
+	image = models.ImageField(upload_to='uploads/products/')
+	amount_sold = models.IntegerField(default=0)
+	category = models.ForeignKey(Category, blank=True, null=True, on_delete=models.SET_NULL, related_name="product_set")
+	subtag = models.CharField(max_length=256, choices=SUBTAGS_CHOICES, default='ARRIBA')
+
+	def __str__(self):
+		return self.title + " - " + self.category.title + " - " + self.subtag 
+
 
 
 class Cart(models.Model):

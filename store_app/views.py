@@ -41,7 +41,7 @@ class CategoryListView(ListAPIView):
 
 class CategoryDetailView(RetrieveAPIView):
 	authentication_classes = []
-	serializer_class = CategorySerializer
+	serializer_class = CategorySimpleSerializer
 	model = Category
 	lookup_field = 'id'
 	queryset = Category.objects.all()
@@ -63,6 +63,7 @@ class ProductDetailView(RetrieveAPIView):
 
 class CartView(APIView):
 
+	# Retrieve cart
 	def get(self, request, token, format=None):
 		data = request.data
 
@@ -80,7 +81,7 @@ class CartView(APIView):
 		except:
 			return Response({"Cart":"Error"}, status=status.HTTP_400_BAD_REQUEST)
 
-
+	# Add product to the cart
 	def post(self, request, format=None, token=None):
 		data = request.data
 
@@ -138,6 +139,8 @@ class CartView(APIView):
 		else:
 			return Response({"Cart": "Error"}, status=status.HTTP_400_BAD_REQUEST)
 
+
+	# Delete product from the cart
 	def delete(self, request, token, format=None):
 		x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
 
@@ -170,11 +173,13 @@ class ProductVariationListView(ListAPIView):
 
 class ProductVariationView(APIView):
 
+	# Retrieve product variation using id
 	def get(self, request, id, format=None):
 		product = ProductVariation.objects.get(id = id)
 		product = ProductVariationSerializer(product, context={"request":request}).data
 		return Response({"Product": product}, status=status.HTTP_200_OK)
 
+	# Update product variation
 	def post(self, request, id, format=None):
 		data = request.data
 		original_product = ProductVariation.objects.get(id=id)
@@ -188,6 +193,7 @@ class ProductVariationView(APIView):
 			return Response({"Cart": None}, status=status.HTTP_400_BAD_REQUEST)
 
 
+	# delete cart
 	def delete(self, request, id, format=None):
 		product = ProductVariation.objects.get(id = id)
 		cart = product.cart

@@ -8,7 +8,7 @@ It does not require the client to have an account to buy, instead, it uses the i
 
 [Models](#models)
 
-[To Dos](#todos)
+[TODOS](#todos)
 
 <a name='#installation'></a>
 
@@ -90,6 +90,6 @@ The models: __product__, __category__, and __order__ do what they are expected t
 
 1. Improve the admin site so it can be more legible for the store owner (view the cart in the order, and the products of the cart) or create an admin panel from zero.
 2. Add basic statistics to the admin panel.
-3. Create subcategories, for example, a category can be camisas and a subcategory can be guayaberas or guayamisas. Find how to modify this in product variations.
+3. Create subcategories, for example, a category can be camisas and a subcategory can be guayaberas or guayamisas. Find how to modify this in product variations. DONE: added subtag filter
 4. Create Users (Admins and Staff). Admins can modify content while staff can only view it.
 5. Create send email templates.

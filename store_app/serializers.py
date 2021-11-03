@@ -3,29 +3,33 @@ from rest_framework import serializers
 from .models import *
 
 # ======================================================================================
-class CategorySimpleSerializer(serializers.ModelSerializer):
+class CategorySerializer(serializers.ModelSerializer):
 
 	image = serializers.ImageField(use_url=True)
 
 	class Meta:
 		model = Category
-		fields = ('title', 'image','id')
+		fields = '__all__'
+
 # ======================================================================================
 class ProductSerializer(serializers.ModelSerializer):
 	image = serializers.ImageField(use_url=True)
+	category = CategorySerializer()
 
 	class Meta:
 		model = Product
 		fields = '__all__'
+
 # ======================================================================================
-class CategorySerializer(serializers.ModelSerializer):
+class CategorySimpleSerializer(serializers.ModelSerializer):
 
 	image = serializers.ImageField(use_url=True)
-	products = ProductSerializer(read_only=True, many=True)
+	products = ProductSerializer(source='product_set', many=True)
 
 	class Meta:
 		model = Category
-		fields = '__all__'
+		fields = ('title', 'image','id', 'products')
+
 # ======================================================================================
 class CartSimpleSerializer(serializers.ModelSerializer):
 
