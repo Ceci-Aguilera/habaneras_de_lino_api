@@ -3,22 +3,30 @@
 
 {% block content %}
 
- <link rel="stylesheet" type='text/css' href="{% static 'store_admin_app/css/categories.css' %}">
+<div class = 'category-div'>
 
+ <link rel="stylesheet" type='text/css' href="{% static 'store_admin_app/css/categories.css' %}">
+<div class = 'search-form-div'>
  <form method="post">
        {% csrf_token %}
-   <input name="search_category" type="text" placeholder="Search...">
-   <div class='search-button-div'>
-   <button type="submit" class="btn btn-primary search-button">Search</button>
-</div>
+      <div class="input-group mb-3">
+        <input  name="search_category" type="text" class="form-control" placeholder="Search ... "/>
+        <button type="submit" class="btn btn-primary">
+          Search
+        </button>
+      </div>
  </form>
+ </div>
 
-<ul>
+<h2>Category List </h2>
   {% for cat in categories %}
-    <li>
-      {{ cat }}
-      </li>
+<div class='categoty-list'>
+  <a class='category-list-link' href="#">
+      <p class='category-list-element'>{{ cat }}</p>
+  </a>
+</div>
     {% endfor %}
-  </ul>
+
+ </div>
 
 {% endblock content %}
