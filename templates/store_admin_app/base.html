@@ -1,0 +1,17 @@
+    {% load static %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Admin Panel</title>
+    </head>
+
+    <link rel="stylesheet" type='text/css' href="{% static 'store_admin_app/css/bootstrap/bootstrap.min.css' %}">
+	<link rel="stylesheet" type='text/css' href="{% static 'store_admin_app/css/bootstrap/bootstrap.css' %}">
+
+    <script src="{% static   'store_admin_app/js/bootstrap/bootstrap.bundle.min.js' %}"></script>
+
+    <body>
+    {% block content %}{% endblock content %}
+    </body>
+</html>

@@ -28,7 +28,6 @@ ALLOWED_HOSTS = ['127.0.0.1','guayabera-style-api.herokuapp.com']
 # Application definition
 
 INSTALLED_APPS = [
-	# 'whitenoise.runserver_nostatic',
 	'django.contrib.staticfiles',
 	'django.contrib.admin',
 	'django.contrib.auth',
@@ -41,6 +40,7 @@ INSTALLED_APPS = [
 	'rest_framework',
 	'knox',
 	'store_app',
+	'store_admin_app',
 ]
 
 MIDDLEWARE = [
@@ -124,11 +124,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIR = [os.path.join(ROOT_BASE_DIR,'staticfiles')]
+STATICFILES_DIRS = (os.path.join(ROOT_BASE_DIR, 'static'),)
 STATIC_ROOT = os.path.join(ROOT_BASE_DIR,'staticfiles')
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-# STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
-# STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
+STATICFILES_FINDERS = (
+'django.contrib.staticfiles.finders.FileSystemFinder',
+'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+)
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(ROOT_BASE_DIR, 'media')
