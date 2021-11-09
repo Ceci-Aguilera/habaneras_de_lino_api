@@ -1,0 +1,26 @@
+.product-div{
+  margin-top: 50px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+}
+
+.search-form-div{
+}
+
+.product-list{
+  border: 1px solid rgb(200, 200, 200);
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.product-list-link{
+  text-decoration: none !important;
+  decorators: none !important;
+  color: black !important;
+}
+
+.product-list-element{
+  margin: 0;
+  margin-left: 10px;
+}

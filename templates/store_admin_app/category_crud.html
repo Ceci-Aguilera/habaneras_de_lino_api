@@ -1,0 +1,33 @@
+{% extends "store_admin_app/base.html" %}
+{% load static %}
+
+{% block content %}
+
+ <link rel="stylesheet" type='text/css' href="{% static 'store_admin_app/css/category_crud.css' %}">
+
+<div class='category-div'>
+
+
+  <form method="post" class='category-form' enctype = "multipart/form-data" >
+
+    {% csrf_token %}
+
+    <div class="mb-3">
+      <label for="title" class="form-label">Title</label>
+      <input type="text" value={{category.title}} name="title" class="form-control" id="title">
+    </div>
+    <p>
+      Current Image: <a href={{category_image}} >{{category.image}}</a>
+      </p>
+    <div class="mb-3">
+      <label for="image" class="form-label">Image</label>
+      <input type="file" value={{category_image}} name="image" class="form-control" id="image">
+    </div>
+    <div class='login-button-div'>
+    <button type="submit" class="btn btn-primary login-button">Save</button>
+</div>
+  </form>
+</div>
+
+
+{% endblock content %}

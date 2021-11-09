@@ -70,3 +70,84 @@ def CategoriesView(request):
 		query = request.POST['search_category']
 		categories = Category.objects.filter(title__icontains=query)
 		return render(request, "store_admin_app/categories.html",{"categories":categories})
+
+
+#=============================================================================
+
+def ProductsView(request):
+	if request.user is None or request.user.is_authenticated == False:
+		return redirect('/store-admin/login/')
+
+	if request.method == "GET":
+		products = Product.objects.all()
+		return render(request, "store_admin_app/products.html",{"products":products})
+
+	elif request.method == 'POST':
+		query = request.POST['search_product']
+		products = Product.objects.filter(title__icontains=query)
+		return render(request, "store_admin_app/products.html",{"products":products})
+
+#=============================================================================
+
+def CreateCategoryView(request):
+	if request.user is None or request.user.is_authenticated == False:
+		return redirect('/store-admin/login/')
+
+	if request.method == "GET":
+		return render(request, "store_admin_app/category_create.html",{})
+
+	elif request.method == 'POST':
+		try:
+			title = request.POST['title']
+			image = request.FILES['image']
+			category = Category.objects.create(title=title, image = image)
+		except:
+			pass
+		return redirect('/store-admin/categories/')
+
+#=============================================================================
+
+def CreateProductView(request):
+	if request.user is None or request.user.is_authenticated == False:
+		return redirect('/store-admin/login/')
+
+	if request.method == "GET":
+		categories = Category.objects.all()
+		return render(request, "store_admin_app/product_create.html",{"categories":categories})
+
+	elif request.method == 'POST':
+		try:
+			title = request.POST['title']
+			price = request.POST['price']
+			subtag = request.POST['subtag']
+			category = Category.objects.get(title = request.POST['category'])
+			image = request.FILES['image']
+			product = Product.objects.create(title=title, image = image, price=price, subtag=subtag, category=category)
+		except:
+			pass
+		return redirect('/store-admin/products/')
+
+def CategoryCRUDView(request, id):
+	if request.user is None or request.user.is_authenticated == False:
+		return redirect('/store-admin/login/')
+
+	if request.method == "GET":
+		category = Category.objects.get(id=id)
+		category_image = str(category.image.url)
+		return render(request, "store_admin_app/category_crud.html",{"category":category, "category_image":category_image})
+
+	elif request.method == 'POST':
+		try:
+			title = request.POST['title']
+			image = request.FILES['image']
+			category = Category.objects.get(id=id)
+			category.title = title
+			category.image = image
+			category.save()
+		except:
+			title = request.POST['title']
+			category = Category.objects.get(id=id)
+			Category.objects.get(id=id)
+			category.title = title
+			category.save()
+		return redirect('/store-admin/categories/')

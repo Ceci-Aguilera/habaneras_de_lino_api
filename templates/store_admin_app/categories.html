@@ -3,6 +3,7 @@
 
 {% block content %}
 
+
 <div class = 'category-div'>
 
  <link rel="stylesheet" type='text/css' href="{% static 'store_admin_app/css/categories.css' %}">
@@ -16,12 +17,19 @@
         </button>
       </div>
  </form>
+
+<a href='{% url "store_admin_app:category-create-view" %}'
+   <button class="btn btn-primary">
+     Add Category
+   </button>
+   </a>
+
  </div>
 
 <h2>Category List </h2>
   {% for cat in categories %}
 <div class='categoty-list'>
-  <a class='category-list-link' href="#">
+  <a class='category-list-link' href="{% url 'store_admin_app:category-crud-view' id=cat.id %}">
       <p class='category-list-element'>{{ cat }}</p>
   </a>
 </div>

@@ -1,0 +1,53 @@
+{% extends "store_admin_app/base.html" %}
+{% load static %}
+
+{% block content %}
+
+ <link rel="stylesheet" type='text/css' href="{% static 'store_admin_app/css/product_create.css' %}">
+
+<div class='product-div'>
+
+
+  <form method="post" class='product-form' enctype = "multipart/form-data" >
+
+    {% csrf_token %}
+
+    <div class="mb-3">
+      <label for="title" class="form-label">Title</label>
+      <input type="text" name="title" class="form-control" id="title">
+    </div>
+      <div class="mb-3">
+        <label for="price" class="form-label">Price</label>
+        <input type="number" step="any" name="price" class="form-control" id="price">
+      </div>
+    <div class="mb-3">
+      <label for="image" class="form-label">Image</label>
+      <input type="file" name="image" class="form-control" id="image">
+    </div>
+
+    <div class="mb-3">
+    <select class="form-select" name="category" aria-label="Default select example">
+      {% for cat in categories %}
+        <option value={{cat.title}}> {{cat.title}} </option>
+      {% endfor %}
+    </select>
+    </div>
+
+    <div class="mb-3">
+    <select class="form-select" name="subtag" aria-label="Default select example">
+      <option value="ARRIBA">ARRIBA</option>
+      <option value="ABAJO">ABAJO</option>
+      <option value="VESTIDO">VESTIDO</option>
+      <option value="ACCESORIO">ACCESORIO</option>
+    </select>
+    </div>
+
+    <div class='login-button-div'>
+      <button type="submit" class="btn btn-primary login-button">Save</button>
+    </div>
+
+  </form>
+</div>
+
+
+{% endblock content %}

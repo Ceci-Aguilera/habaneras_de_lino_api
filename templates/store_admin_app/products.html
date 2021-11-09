@@ -1,0 +1,38 @@
+{% extends "store_admin_app/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class = 'product-div'>
+
+ <link rel="stylesheet" type='text/css' href="{% static 'store_admin_app/css/products.css' %}">
+<div class = 'search-form-div'>
+ <form method="post">
+       {% csrf_token %}
+      <div class="input-group mb-3">
+        <input  name="search_product" type="text" class="form-control" placeholder="Search ... "/>
+        <button type="submit" class="btn btn-primary">
+          Search
+        </button>
+      </div>
+ </form>
+ </div>
+
+ <a href='{% url "store_admin_app:product-create-view" %}'
+    <button class="btn btn-primary">
+      Add Product
+    </button>
+    </a>
+
+<h2>Products List </h2>
+  {% for prod in products %}
+<div class='product-list'>
+  <a class='product-list-link' href="#">
+      <p class='product-list-element'>{{ prod }}</p>
+  </a>
+</div>
+    {% endfor %}
+
+ </div>
+
+{% endblock content %}
