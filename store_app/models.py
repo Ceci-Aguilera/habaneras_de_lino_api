@@ -11,6 +11,24 @@ SUBTAGS_CHOICES = (
 )
 
 
+class CustomColor(models.Model):
+	title = models.CharField(max_length=256, default='')
+	code = models.CharField(max_length=256, default='')
+
+	def __str__(self):
+		return self.code + " - " + self.title
+
+class CustomCollection(models.Model):
+	title = models.CharField(max_length=256, default='')
+	description = models.TextField(blank=True)
+
+	def all_products_per_collection(self):
+		return self.products_per_collection_set.all()
+
+	def __str__(self):
+		return self.title
+
+
 class Category(models.Model):
 	title = models.CharField(max_length=256, default='')
 	image = models.ImageField(upload_to='uploads/categories/', blank=True)
@@ -24,14 +42,27 @@ class Category(models.Model):
 
 class Product(models.Model):
 	title = models.CharField(max_length=256, default='')
+	code = models.CharField(max_length=256, default='')
 	price = models.FloatField(default=0.0)
 	image = models.ImageField(upload_to='uploads/products/')
+	s_image = models.ImageField(upload_to='uploads/products/', null=True, blank=True)
 	amount_sold = models.IntegerField(default=0)
 	category = models.ForeignKey(Category, blank=True, null=True, on_delete=models.SET_NULL, related_name="product_set")
 	subtag = models.CharField(max_length=256, choices=SUBTAGS_CHOICES, default='ARRIBA')
+	available_colors = models.ManyToManyField(CustomColor)
+	collection = models.ManyToManyField(CustomCollection, related_name='products_per_collection_set')
+	description = models.TextField(blank=True)
 
 	def __str__(self):
-		return self.title + " - " + self.category.title + " - " + self.subtag 
+		return self.title + " - " + self.category.title + " - " + self.subtag
+
+
+class ProductImage(models.Model):
+	image = models.ImageField(upload_to='uploads/products-images/', blank=True)
+	product = models.ForeignKey(Product, on_delete=models.CASCADE)
+
+	def __str__(self):
+		return self.product.title
 
 
 
@@ -52,6 +83,7 @@ class ProductVariation(models.Model):
 	clothing_s = models.CharField(max_length=256, default="S")
 	size_of_sleeve = models.CharField(max_length=256, default="Corta")
 	fit = models.CharField(max_length=256, default="Regular Fit")
+	color = models.CharField(max_length=256, default="Default")
 
 	def __str__(self):
 		if self.product is not None:

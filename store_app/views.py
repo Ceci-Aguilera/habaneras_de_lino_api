@@ -29,7 +29,20 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
 
+class CustomCollectionListView(ListAPIView):
+	authentication_classes = []
+	serializer_class = CustomCollectionSerializer
+	model = CustomCollection
+	queryset = CustomCollection.objects.all()
 
+
+class ProductImagesView(APIView):
+	authentication_classes = []
+
+	def get(self, request, id, format=None):
+		images = ProductImage.objects.filter(product__id = id)
+		images_serializer = ProductImageSimpleSerializer(images, many=True, context={"request":request}).data
+		return Response ({"Images": images_serializer}, status=status.HTTP_200_OK)
 
 
 class CategoryListView(ListAPIView):

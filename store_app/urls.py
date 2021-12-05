@@ -6,6 +6,8 @@ app_name = 'store_app'
 
 urlpatterns = [
 	url(r'^categories/$',CategoryListView.as_view(),name='category-list-view'),
+	url(r'^collections/$',CustomCollectionListView.as_view(),name='collection-list-view'),
+	url(r'^product-images/(?P<id>[0-9]+)/$', ProductImagesView.as_view(), name='product-images-detail-api'),
 	url(r'^categories/(?P<id>[0-9]+)/$', CategoryDetailView.as_view(), name='category-detail-api'),
 	url(r'^products/$',ProductListView.as_view(),name='products-list-view'),
 	url(r'^products/(?P<id>[0-9]+)/$', ProductDetailView.as_view(), name='products-detail-api'),

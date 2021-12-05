@@ -11,14 +11,40 @@ class CategorySerializer(serializers.ModelSerializer):
 		model = Category
 		fields = '__all__'
 
+class CustomColorsSerializer(serializers.ModelSerializer):
+
+	class Meta:
+		model = CustomColor
+		fields = '__all__'
+
 # ======================================================================================
 class ProductSerializer(serializers.ModelSerializer):
 	image = serializers.ImageField(use_url=True)
+	s_image = serializers.ImageField(use_url=True)
 	category = CategorySerializer()
+	available_colors = CustomColorsSerializer(many=True)
+	description = serializers.CharField(required=False, allow_blank=True)
 
 	class Meta:
 		model = Product
+		exclude = ('collection', )
+
+
+class CustomCollectionSerializer(serializers.ModelSerializer):
+	description = serializers.CharField(required=False, allow_blank=True)
+	all_products_per_collection = ProductSerializer(source='products_per_collection_set', many=True)
+
+	class Meta:
+		model = CustomCollection
 		fields = '__all__'
+
+
+class ProductImageSimpleSerializer(serializers.ModelSerializer):
+
+	class Meta:
+		model = ProductImage
+		fields = ['image', 'id', 'pk']
+
 
 # ======================================================================================
 class CategorySimpleSerializer(serializers.ModelSerializer):
@@ -41,7 +67,7 @@ class ProductVariationSimpleSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = ProductVariation
-		fields = ("cant", 'price', 'clothing_s', 'id', 'size_of_sleeve', 'fit')
+		fields = ("cant", 'price', 'clothing_s', 'id', 'size_of_sleeve', 'fit', 'color')
 # ======================================================================================
 class ProductVariationSerializer(serializers.ModelSerializer):
 
@@ -49,7 +75,7 @@ class ProductVariationSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = ProductVariation
-		fields = ("cant", 'price', 'id', 'product', 'clothing_s', 'size_of_sleeve', 'fit')
+		fields = ("cant", 'price', 'id', 'product', 'clothing_s', 'size_of_sleeve', 'fit', 'color')
 # ======================================================================================
 class CartSerializer(serializers.ModelSerializer):
 
