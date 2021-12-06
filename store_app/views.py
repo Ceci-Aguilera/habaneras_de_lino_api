@@ -59,6 +59,16 @@ class CategoryDetailView(RetrieveAPIView):
 	lookup_field = 'id'
 	queryset = Category.objects.all()
 
+
+class CustomCollectionDetailView(RetrieveAPIView):
+	authentication_classes = []
+	serializer_class = CustomCollectionSerializer
+	model = CustomCollection
+	lookup_field = 'id'
+	queryset = CustomCollection.objects.all()
+
+
+
 class ProductListView(ListAPIView):
 	authentication_classes = []
 	serializer_class = ProductSerializer
