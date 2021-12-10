@@ -11,6 +11,12 @@ class CategorySerializer(serializers.ModelSerializer):
 		model = Category
 		fields = '__all__'
 
+class CategorySimpleSerializerFilter(serializers.ModelSerializer):
+
+	class Meta:
+		model = Category
+		fields = ('title', 'id')
+
 class CustomColorsSerializer(serializers.ModelSerializer):
 
 	class Meta:
@@ -37,6 +43,13 @@ class CustomCollectionSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = CustomCollection
 		fields = '__all__'
+
+
+class CustomCollectionSimpleSerializerFilter(serializers.ModelSerializer):
+
+	class Meta:
+		model = CustomCollection
+		fields = ('title', 'id')
 
 
 class ProductImageSimpleSerializer(serializers.ModelSerializer):

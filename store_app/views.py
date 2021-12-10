@@ -51,6 +51,21 @@ class CategoryListView(ListAPIView):
 	model = Category
 	queryset = Category.objects.all()
 
+class CategoryMenListView(APIView):
+	authentication_classes = []
+	def get(self, request, format=None):
+		info_to_serialize = Category.objects.filter(product_set__extra_tag='MEN').distinct()
+		men_category = CategorySimpleSerializer(info_to_serialize, many=True).data
+		return Response({"Categories": men_category}, status=status.HTTP_200_OK)
+
+class CategoryWomenListView(ListAPIView):
+	authentication_classes = []
+
+	def get(self, request, format=None):
+		info_to_serialize = Category.objects.filter(product_set__extra_tag='WOMEN').distinct()
+		women_category = CategorySimpleSerializer(info_to_serialize, many=True).data
+		return Response({"Categories": women_category}, status=status.HTTP_200_OK)
+
 
 class CategoryDetailView(RetrieveAPIView):
 	authentication_classes = []
@@ -68,6 +83,22 @@ class CustomCollectionDetailView(RetrieveAPIView):
 	queryset = CustomCollection.objects.all()
 
 
+class CustomCollectionMenListView(APIView):
+	authentication_classes = []
+	def get(self, request, format=None):
+		info_to_serialize = CustomCollection.objects.filter(products_per_collection_set__extra_tag='MEN').distinct()
+		men_collection = CustomCollectionSerializer(info_to_serialize, many=True).data
+		return Response({"Collections": men_collection}, status=status.HTTP_200_OK)
+
+class CustomCollectionWomenListView(ListAPIView):
+	authentication_classes = []
+
+	def get(self, request, format=None):
+		info_to_serialize = Category.objects.filter(products_per_collection_set__extra_tag='WOMEN').distinct()
+		women_collection = CustomCollectionSerializer(info_to_serialize, many=True).data
+		return Response({"Collections": women_collection}, status=status.HTTP_200_OK)
+
+
 
 class ProductListView(ListAPIView):
 	authentication_classes = []
@@ -82,6 +113,44 @@ class ProductDetailView(RetrieveAPIView):
 	model = Product
 	lookup_field = 'id'
 	queryset = Product.objects.all()
+
+
+class CustomCollectionTitleDetailView(APIView):
+	authentication_classes = []
+	serializer_class = CustomCollectionSerializer
+	model = CustomCollection
+
+	def get(self,request, *args, **kwargs):
+		title = kwargs['title']
+		collection = CustomCollection.objects.all().get(title=title)
+		collection_serializer = CustomCollectionSerializer(collection).data
+		return Response({"Collection": collection_serializer}, status=status.HTTP_200_OK)
+
+
+class ProductsPerExtraTag(APIView):
+
+	def get(self, request, format=None):
+
+		women = dict()
+		info_to_serialize = Category.objects.filter(product_set__extra_tag='WOMEN').distinct().only("title", "id")
+		women['category'] = CategorySimpleSerializerFilter(info_to_serialize, many=True).data
+		info_to_serialize = CustomCollection.objects.filter(products_per_collection_set__extra_tag='WOMEN').distinct().only("title", "id")
+		women['collection'] = CustomCollectionSimpleSerializerFilter(info_to_serialize, many=True).data
+
+		men = dict()
+		info_to_serialize = Category.objects.filter(product_set__extra_tag='MEN').distinct().only("title", "id")
+		men['category'] = CategorySimpleSerializerFilter(info_to_serialize, many=True).data
+		print(CategorySimpleSerializer(info_to_serialize, many=True))
+		info_to_serialize = CustomCollection.objects.filter(products_per_collection_set__extra_tag='MEN').distinct().only("title", "id")
+		men['collection'] = CustomCollectionSimpleSerializerFilter(info_to_serialize, many=True).data
+
+		kids = dict()
+		info_to_serialize = Category.objects.filter(product_set__extra_tag='KIDS').distinct().only("title", "id")
+		kids['category'] = CategorySimpleSerializerFilter(info_to_serialize, many=True).data
+		info_to_serialize = CustomCollection.objects.filter(products_per_collection_set__extra_tag='KIDS').distinct().only("title", "id")
+		kids['collection'] = CustomCollectionSimpleSerializerFilter(info_to_serialize, many=True).data
+
+		return Response({"women": women, "men":men, "kids":kids}, status=status.HTTP_200_OK)
 
 
 class CartView(APIView):

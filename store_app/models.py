@@ -10,6 +10,12 @@ SUBTAGS_CHOICES = (
     ('ACCESORIO', 'ACCESORIO'),
 )
 
+EXTRA_TAG_CHOICES = (
+    ('WOMEN', 'WOMEN'),
+    ('MEN', 'MEN'),
+    ('KIDS', 'KIDS'),
+)
+
 
 class CustomColor(models.Model):
 	title = models.CharField(max_length=256, default='')
@@ -52,6 +58,7 @@ class Product(models.Model):
 	available_colors = models.ManyToManyField(CustomColor)
 	collection = models.ManyToManyField(CustomCollection, related_name='products_per_collection_set')
 	description = models.TextField(blank=True)
+	extra_tag = models.CharField(max_length=256, choices=EXTRA_TAG_CHOICES, default='WOMEN')
 
 	def __str__(self):
 		return self.title + " - " + self.category.title + " - " + self.subtag
