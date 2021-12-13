@@ -39,6 +39,7 @@ class ProductSerializer(serializers.ModelSerializer):
 class CustomCollectionSerializer(serializers.ModelSerializer):
 	description = serializers.CharField(required=False, allow_blank=True)
 	all_products_per_collection = ProductSerializer(source='products_per_collection_set', many=True)
+	image = serializers.ImageField(use_url=True)
 
 	class Meta:
 		model = CustomCollection

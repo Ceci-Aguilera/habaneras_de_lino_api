@@ -1,26 +1,95 @@
 .product-div{
-  margin-top: 50px;
-  margin-left: auto;
-  margin-right: auto;
+  margin-top: 100px;
+  margin-left: auto !important;
+  margin-right: auto !important;
   width: 80%;
+  max-width: 800px;
+  margin-bottom: 200px;
+  color: rgba(100,100,100,1) !important;
+  font-family: "Roboto, sans-serif";
+  font-size: 1.2em;
+}
+
+p{
+    color: rgba(100,100,100,1) !important;
+  font-family: "Roboto, sans-serif";
+  font-size: 1.2em;
+}
+
+h1{
+  text-align: center;
+  color: #244c77;
 }
 
 .search-form-div{
+  margin-top: 50px;
+  max-width: 500px;
+  min-width: 300px;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.create-button-div{
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+}
+
+.create-button, .search-button{
+    background-color: dodgerblue !important;
+    border-color: dodgerblue !important;
+
+}
+
+.create-button:after,
+.create-button:active,
+.create-button:focus,
+.create-button:hover,
+.search-button:after,
+.search-button:active,
+.search-button:focus,
+.search-button:hover{
+    background-color: #0d6efd!important;
+    border-color: #0d6efd!important;
+}
+
+.product-list-div{
+  margin-top: 50px;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  width: max-content;
+}
+
+h2{
+  color: #244c77;
+  text-align: center;
+}
+
+.product-list-elements-div{
+   margin-top: 30px;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  text-align: center;
 }
 
 .product-list{
-  border: 1px solid rgb(200, 200, 200);
-  border-radius: 5px;
+   border: 1px solid rgb(200, 200, 200);
+  border-radius: 8px;
   margin-top: 10px;
+  height: 40px;
+  width: 600px;
+  text-align: center;
 }
 
 .product-list-link{
-  text-decoration: none !important;
-  decorators: none !important;
+ text-decoration: none !important;
   color: black !important;
+  vertical-align: middle;
+  text-align: center;
 }
 
 .product-list-element{
-  margin: 0;
-  margin-left: 10px;
+  vertical-align: middle;
+  padding-top: 0px;
+  text-align: center;
 }

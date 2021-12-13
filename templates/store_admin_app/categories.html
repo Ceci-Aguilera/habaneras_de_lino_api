@@ -6,34 +6,47 @@
 
 <div class = 'category-div'>
 
- <link rel="stylesheet" type='text/css' href="{% static 'store_admin_app/css/categories.css' %}">
+    <h1>
+        Categorias
+    </h1>
+
+ <link rel="stylesheet" type='text/css' href="{% static 'store_admin_app/css/categories.css'%}?{% now 'U' %}">
 <div class = 'search-form-div'>
  <form method="post">
        {% csrf_token %}
       <div class="input-group mb-3">
-        <input  name="search_category" type="text" class="form-control" placeholder="Search ... "/>
-        <button type="submit" class="btn btn-primary">
-          Search
+        <input  name="search_category" type="text" class="form-control" placeholder="Buscar por titulo ... "/>
+        <button type="submit" class="btn btn-primary search-button">
+          Buscar
         </button>
       </div>
  </form>
 
-<a href='{% url "store_admin_app:category-create-view" %}'
-   <button class="btn btn-primary">
-     Add Category
-   </button>
-   </a>
+    <div class="create-button-div">
+        <a href='{% url "store_admin_app:category-create-view" %}'>
+            <button class="btn btn-primary create-button">
+              ADICIONAR +
+            </button>
+        </a>
+    </div>
 
  </div>
 
-<h2>Category List </h2>
-  {% for cat in categories %}
-<div class='categoty-list'>
-  <a class='category-list-link' href="{% url 'store_admin_app:category-crud-view' id=cat.id %}">
-      <p class='category-list-element'>{{ cat }}</p>
-  </a>
-</div>
-    {% endfor %}
+    <div class="category-list-div">
+
+        <h2>Lista de Categorias</h2>
+            <div class="category-list-elements-div">
+              {% for cat in categories %}
+            <div class='category-list'>
+              <a class='category-list-link' href="{% url 'store_admin_app:category-crud-view' id=cat.id %}">
+                  <p class='category-list-element'>{{ cat }}</p>
+              </a>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+
 
  </div>
 

@@ -3,6 +3,7 @@
 
 {% block content %}
 
+
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
   <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
     <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
@@ -16,16 +17,17 @@
 </svg>
 
 
- <link rel="stylesheet" type='text/css' href="{% static 'store_admin_app/css/category_create.css'%}?{% now 'U' %}">
 
-<div class='category-div'>
+ <link rel="stylesheet" type='text/css' href="{% static 'store_admin_app/css/collection_create.css'%}?{% now 'U' %}">
+
+<div class='collection-div'>
 
 
   <h1>
-    Crear Nueva Categoria
+    Crear Nueva Coleccion
   </h1>
 
-  {% if message != "No Error" %}
+    {% if message != "No Error" %}
 
   <div class="alert alert-danger d-flex align-items-center" role="alert">
       <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
@@ -36,21 +38,28 @@
   {% endif %}
 
 
-  <form method="post" class='category-form' enctype = "multipart/form-data" >
+  <form method="post" class='collection-form' enctype = "multipart/form-data" >
 
     {% csrf_token %}
 
     <div class="mb-3 form-field-div">
-      <label for="title" class="form-label form-field-label">Titulo de la Categoria</label>
+      <label for="title" class="form-label form-field-label">Titulo de la Coleccion</label>
       <input type="text" name="title" class="form-control" id="title">
     </div>
+
     <div class="mb-3 form-field-div">
       <label for="image" class="form-label form-field-label">Imagen</label>
       <input type="file" name="image" class="form-control" id="image">
     </div>
+
+    <div class="mb-3 form-field-div">
+      <label for="description" class="form-label form-field-label">Descipcion</label>
+      <textarea name="description" class="form-control" id="description" rows="5"></textarea>
+    </div>
+
     <div class='login-button-div'>
-    <button type="submit" class="btn btn-primary login-button">Guardar Cambios</button>
-</div>
+       <button type="submit" class="btn btn-primary login-button">Guardar Cambios</button>
+    </div>
   </form>
 </div>
 

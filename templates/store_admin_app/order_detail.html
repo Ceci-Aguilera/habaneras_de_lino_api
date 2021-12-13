@@ -1,0 +1,194 @@
+{% extends "store_admin_app/base.html" %}
+{% load static %}
+
+{% block content %}
+
+
+<div class = 'order-div'>
+
+    <h1>
+        Detalles de la Orden
+    </h1>
+
+ <link rel="stylesheet" type='text/css' href="{% static 'store_admin_app/css/order_detail.css'%}?{% now 'U' %}">
+
+    <div class="row">
+
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+            <div class="order-info-div">
+                <p>
+                <span>Order id:</span> {{order.id}}
+                </p>
+
+                 <p>
+                    <span>Cliente:</span> {% if order.user_first_name != None and order.user_first_name != "" %}{{order.user_first_name}}
+                     {% else %} --- {% endif %}
+                     {% if order.user_last_name != None and order.user_last_name != ""%}{{order.user_last_name}}
+                     {% else %} --- {% endif %}
+                </p>
+
+                <p>
+                    <span>Email del Cliente:</span> {% if order.email != None and order.email != "" %}{{order.email}}
+                    {% else %} --- {% endif %}
+                </p>
+
+                <p>
+                    <span>Telefono del Cliente:</span> {% if order.phone != None and order.phone != ""%}{{order.phone}}
+                    {% else %} --- {% endif %}
+                </p>
+
+                <p>
+                    <span>Direccion:</span> {% if order.address1 != None and order.address1 != ""%}{{order.address1}}
+                    {% else %} --- {% endif %}
+                </p>
+                <p>
+                    <span>Direccion (Extra):</span> {% if order.address2 != None and order.address2 != ""%}{{order.address2}}
+                    {% else %} --- {% endif %}
+                </p>
+                <p>
+                    <span>Total (Sin taxes):</span> ${{cart.cost}}
+                </p>
+                <p>
+                    <span>Total (+ 0.07 de taxes):</span> ${{payment.amount}}
+                </p>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+            <form method="post" class='order-form' enctype = "multipart/form-data" >
+
+           {% csrf_token %}
+
+         <div class="mb-3 form-field-div">
+              <label for="order_status" class="form-label form-field-label">Estado de la Order/Pedido</label>
+              <select class="form-select" name="order_status" id="order_status" value="order_status">
+                  {% for key, val  in status_map.items %}
+                    {% if order.status == key %}
+                        <option value="{{key}}" selected>{{val}}</option>
+                    {% else %}
+                       <option value="{{key}}">{{val}}</option>
+                    {%  endif %}
+                {% endfor %}
+              </select>
+          </div>
+
+            <div class="button-div save-button-div">
+                <button type="submit" class="btn btn-primary create-button" name="save" value="save" id="save-button">Guardar Cambios</button>
+            </div>
+
+
+
+            {% if payment.refund == "No refund asked" or payment.refund == "Error" %}
+               <div class="form-check form-field-div">
+                   <p class="refund-status-p">Refund status: {{payment.refund}}</p>
+                  <input class="form-check-input" type="checkbox" name="make_refund" id="make_refund" onclick="refundButton()">
+                  <label class="form-check-label form-field-label" for="make_refund" id="checkbox-button">
+                    Hacer Refund/Devolver Dinero a Cliente
+                  </label>
+                </div>
+
+                <div class="button-div save-button-div">
+                    <button type="submit" class="btn btn-danger" name="refund" value="refund" id="refund-button" style="display:none">
+                         Hacer Refund/Devolver dinero
+                     </button>
+                </div>
+
+
+           {% else %}
+            <p>
+                Refund result: {{payment.refund}}
+            </p>
+           {% endif %}
+
+    </form>
+        </div>
+
+    </div>
+
+<div class="products-div">
+
+
+     <div class="order-list-div">
+         <h2>
+            Productos
+        </h2>
+            <div class="order-list-elements-div">
+              {% for prod in products %}
+                <div class='order-list'>
+                    <a class='order-list-link' href={{prod.product.image.url}}>
+
+                        <div class="row row-div">
+
+                            <div class="col-sm-10">
+
+                                <div class="row">
+
+                                    <div class="col-sm-4">
+                                        <p><span>{{ prod }}</span></p>
+                                    </div>
+
+                                     <div class="col-sm-4">
+                                        <p><span>Talla:</span> {{prod.clothing_s}}</p>
+                                    </div>
+
+                                     <div class="col-sm-4">
+                                       <p><span>Tipo de manga:</span> {{prod.size_of_sleeve}}</p>
+                                    </div>
+
+                                     <div class="col-sm-4">
+                                        <p><span>Corte: </span>{{prod.fit}}</p>
+                                    </div>
+
+                                     <div class="col-sm-4">
+                                       <p> <span>Cantidad:</span> {{prod.cant}} </p>
+                                    </div>
+
+                                     <div class="col-sm-4">
+                                       <p> <span>Price:</span> ${{prod.price}} </p>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-sm-2">
+                                 {% if prod.color != "Default" and prod.color != "default" and prod.color != "" %}
+                                 <div class="col-sm-4">
+                                    <div style="height:40px; width:40px; background-color:{{prod.color}}; border: 3px solid lightsteelblue" class="custom-colors-pre-div"></div>
+                                </div>
+                            {% endif %}
+                            </div>
+
+                        </div>
+
+                    </a>
+
+                </div>
+
+             {% endfor %}
+            </div>
+         </div>
+</div>
+
+
+
+
+
+ </div>
+
+
+
+<script>
+function refundButton() {
+  var checkBox = document.getElementById("make_refund");
+  var button = document.getElementById("refund-button");
+  if (checkBox.checked == true){
+    button.style.display = "block";
+  } else {
+     button.style.display = "none";
+  }
+}
+</script>
+
+
+
+{% endblock content %}

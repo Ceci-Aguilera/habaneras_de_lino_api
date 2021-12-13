@@ -1,0 +1,63 @@
+{% extends "store_admin_app/base.html" %}
+{% load static %}
+
+{% block content %}
+
+
+<div class = 'custom-colors-div'>
+
+ <link rel="stylesheet" type='text/css' href="{% static 'store_admin_app/css/available_colors.css'%}?{% now 'U' %}">
+
+     <h1>
+        Colores Personalizados
+    </h1>
+
+
+<div class = 'search-form-div'>
+ <form method="post">
+
+       {% csrf_token %}
+
+      <div class="input-group mb-3">
+        <input  name="search_available_colors" type="text" class="form-control" placeholder="Buscar color por titulo ... "/>
+        <button type="submit" class="btn btn-primary search-button">
+          Buscar
+        </button>
+      </div>
+ </form>
+
+
+<div class="create-button-div">
+<a href='{% url "store_admin_app:custom-colors-create-view" %}'>
+   <button class="btn btn-primary create-button">
+     ADICIONAR +
+   </button>
+   </a>
+    </div>
+
+
+ </div>
+
+     <div class="custom-colors-list-div">
+        <h2>Custom Colors List </h2>
+                 <div class="custom-colors-list-elements-div">
+                      {% for available_color in available_colors %}
+                    <div class='custom-colors-list'>
+                            <a class='custom-colors-list-link' href="{% url 'store_admin_app:custom-colors-crud-view' id=available_color.id %}">
+                                    <div style="height:40px; width:40px; background-color:{{available_color.code}}; border: 3px solid lightsteelblue" class="custom-colors-pre-div"></div>
+                                <div class="custom-colors-nickname-div">
+                                    <p class='custom-colors-list-element'>
+                                  {{ available_color.title }} - {{available_color.code}}
+                              </p>
+                            </div>
+                      </a>
+                    </div>
+
+            {% endfor %}
+         </div>
+     </div>
+
+
+ </div>
+
+{% endblock content %}

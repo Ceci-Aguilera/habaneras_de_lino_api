@@ -27,6 +27,7 @@ class CustomColor(models.Model):
 class CustomCollection(models.Model):
 	title = models.CharField(max_length=256, default='')
 	description = models.TextField(blank=True)
+	image = image = models.ImageField(upload_to='uploads/collections/', blank=True, null=True)
 
 	def all_products_per_collection(self):
 		return self.products_per_collection_set.all()
@@ -50,7 +51,7 @@ class Product(models.Model):
 	title = models.CharField(max_length=256, default='')
 	code = models.CharField(max_length=256, default='')
 	price = models.FloatField(default=0.0)
-	image = models.ImageField(upload_to='uploads/products/')
+	image = models.ImageField(upload_to='uploads/products/', blank=True)
 	s_image = models.ImageField(upload_to='uploads/products/', null=True, blank=True)
 	amount_sold = models.IntegerField(default=0)
 	category = models.ForeignKey(Category, blank=True, null=True, on_delete=models.SET_NULL, related_name="product_set")
@@ -67,6 +68,7 @@ class Product(models.Model):
 class ProductImage(models.Model):
 	image = models.ImageField(upload_to='uploads/products-images/', blank=True)
 	product = models.ForeignKey(Product, on_delete=models.CASCADE)
+	type = models.CharField(max_length=256, default='first')
 
 	def __str__(self):
 		return self.product.title
@@ -105,6 +107,7 @@ class Payment(models.Model):
 	stripe_charge_id = models.CharField(max_length=50)
 	amount = models.FloatField(default=0.0)
 	timestamp = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+	refund = models.CharField(max_length=256, default="No refund asked")
 
 	def __str__(self):
 		if ((self.email != "") and (self.email != '-1')):
@@ -124,6 +127,7 @@ class Order(models.Model):
 	user_last_name = models.CharField(max_length=256, default='-1')
 	ordered_date = models.DateTimeField(auto_now_add=True, blank=True,null=True)
 	ordered = models.BooleanField(default=False)
+	status = models.CharField(max_length=256, default="Ordered")
 	payment = models.ForeignKey(Payment, on_delete=models.SET_NULL, null=True, blank=True)
 
 	def __str__(self):

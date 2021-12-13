@@ -1,4 +1,4 @@
-.category-div{
+.order-div{
   margin-top: 100px;
   margin-left: auto !important;
   margin-right: auto !important;
@@ -29,31 +29,7 @@ h1{
   margin-right: auto !important;
 }
 
-.create-button-div{
-  margin-top: 50px;
-  display: flex;
-  justify-content: flex-end;
-}
-
-.create-button, .search-button{
-    background-color: dodgerblue !important;
-    border-color: dodgerblue !important;
-
-}
-
-.create-button:after,
-.create-button:active,
-.create-button:focus,
-.create-button:hover,
-.search-button:after,
-.search-button:active,
-.search-button:focus,
-.search-button:hover{
-    background-color: #0d6efd!important;
-    border-color: #0d6efd!important;
-}
-
-.category-list-div{
+.order-list-div{
   margin-top: 50px;
   margin-left: auto !important;
   margin-right: auto !important;
@@ -62,33 +38,59 @@ h1{
 
 h2{
   color: #244c77;
+  text-align: center;
 }
 
-.category-list-elements-div{
+.order-list-elements-div{
   margin-top: 30px;
   margin-left: auto !important;
   margin-right: auto !important;
-  text-align: center;
 }
 
-.category-list{
+.order-list{
   border: 1px solid rgb(200, 200, 200);
   border-radius: 8px;
   margin-top: 10px;
-  height: 40px;
-  width: 300px;
+  min-height: 40px;
+  width: 700px;
   text-align: center;
 }
 
-.category-list-link{
+.order-list-link{
   text-decoration: none !important;
   color: black !important;
   vertical-align: middle;
-  text-align: center;
 }
 
-.category-list-element{
+.order-list-element{
+  margin-left: 10px;
   vertical-align: middle;
-  padding-top: 0px;
-  text-align: center;
+  padding-top: 10px;
+}
+
+.form-label{
+  margin-right: 10px;
+  padding-top: 10px;
+}
+
+.filter-status-form-div{
+  margin-top: 50px;
+  max-width: 500px;
+  min-width: 300px;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.search-button{
+    background-color: dodgerblue !important;
+    border-color: dodgerblue !important;
+
+}
+
+.search-button:after,
+.search-button:active,
+.search-button:focus,
+.search-button:hover{
+    background-color: #0d6efd!important;
+    border-color: #0d6efd!important;
 }

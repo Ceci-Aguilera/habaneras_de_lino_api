@@ -1,4 +1,6 @@
 .navbar-custom{
   background-color: #244c77 !important;
   color: white !important;
+  color: rgba(100,100,100,1);
+  font-family: "Roboto, sans-serif" !important;
 }

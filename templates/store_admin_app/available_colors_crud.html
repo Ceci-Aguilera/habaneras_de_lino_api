@@ -16,16 +16,17 @@
 </svg>
 
 
- <link rel="stylesheet" type='text/css' href="{% static 'store_admin_app/css/category_create.css'%}?{% now 'U' %}">
+ <link rel="stylesheet" type='text/css' href="{% static 'store_admin_app/css/available_colors_crud.css'%}?{% now 'U' %}">
 
-<div class='category-div'>
+<div class='custom-colors-div'>
 
-
-  <h1>
-    Crear Nueva Categoria
+    <h1>
+        Editar Color Personalizado
   </h1>
 
-  {% if message != "No Error" %}
+
+
+   {% if message != "No Error" %}
 
   <div class="alert alert-danger d-flex align-items-center" role="alert">
       <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
@@ -36,23 +37,49 @@
   {% endif %}
 
 
-  <form method="post" class='category-form' enctype = "multipart/form-data" >
+
+  <form method="post" class='custom-colors-form' enctype = "multipart/form-data" >
 
     {% csrf_token %}
 
-    <div class="mb-3 form-field-div">
-      <label for="title" class="form-label form-field-label">Titulo de la Categoria</label>
-      <input type="text" name="title" class="form-control" id="title">
+     <div class="mb-3 form-field-div">
+      <label for="title" class="form-label form-field-label">Titulo del Color Personalizado</label>
+      <input type="text" value="{{custom_color.title}}" name="title" class="form-control" id="title">
     </div>
-    <div class="mb-3 form-field-div">
-      <label for="image" class="form-label form-field-label">Imagen</label>
-      <input type="file" name="image" class="form-control" id="image">
+
+
+      <div class="mb-3 form-field-div">
+           <label for="code" class="form-label form-field-label">Code
+            <input type="color" class="form-control form-control-color" value="{{custom_color.code}}" name="code"  id="code" onchange="myFunction();" />
+            </label>
+           <span id="custom-colors-p"></span>
     </div>
-    <div class='login-button-div'>
-    <button type="submit" class="btn btn-primary login-button">Guardar Cambios</button>
-</div>
+
+
+ <div class="row">
+      <div class='delete-button-div col-sm-6'>
+      <button type="submit" class="btn btn-danger delete-button" name="delete" value="delete">Borrar</button>
+    </div>
+
+    <div class='save-button-div col-sm-6'>
+      <button type="submit" class="btn btn-primary save-button" name="save" value="save">Guardar Cambios</button>
+    </div>
+    </div>
+
   </form>
 </div>
+
+
+
+
+<script>
+    function myFunction(){
+        var x = document.getElementById("custom-colors-p");
+        var code = document.getElementById("code");
+        x.innerHTML = code.value;
+        console.log(code);
+    }
+</script>
 
 
 {% endblock content %}

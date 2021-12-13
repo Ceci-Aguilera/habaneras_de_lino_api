@@ -3,26 +3,36 @@
 
 {% block content %}
 
- <link rel="stylesheet" type='text/css' href="{% static 'store_admin_app/css/login.css' %}">
+ <link rel="stylesheet" type='text/css' href="{% static 'store_admin_app/css/login.css'%}?{% now 'U' %}">
 
 <div class='login-div'>
+
+
+  <div class="'header-div">
+      <h1>
+        Login/Accede a tu cuenta de Admin
+      </h1>
+  </div>
 
 
   <form method="post" class='login-form'>
 
     {% csrf_token %}
 
-    <div class="mb-3">
-      <label for="username" class="form-label">Username</label>
+    <div class="mb-3 form-field-div">
+      <label for="username" class="form-label"><p class="form-p">Username</p></label>
       <input type="text" name="username" class="form-control" id="username">
-    <div class="mb-3">
-      <label for="password" class="form-label">Password</label>
+    </div>
+    <div class="mb-3 form-field-div">
+      <label for="password" class="form-label"><p class="form-p">Password</p></label>
       <input type="password" name="password" class="form-control" id="password">
     </div>
     <div class='login-button-div'>
     <button type="submit" class="btn btn-primary login-button">Login</button>
-</div>
+    </div>
+
   </form>
+
 </div>
 
 

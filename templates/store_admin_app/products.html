@@ -5,34 +5,46 @@
 
 <div class = 'product-div'>
 
- <link rel="stylesheet" type='text/css' href="{% static 'store_admin_app/css/products.css' %}">
+ <link rel="stylesheet" type='text/css' href="{% static 'store_admin_app/css/products.css'%}?{% now 'U' %}">
+
+     <h1>
+        Productos
+    </h1>
+
+
 <div class = 'search-form-div'>
  <form method="post">
        {% csrf_token %}
       <div class="input-group mb-3">
-        <input  name="search_product" type="text" class="form-control" placeholder="Search ... "/>
-        <button type="submit" class="btn btn-primary">
+         <input  name="search_product" type="text" class="form-control" placeholder="Buscar por titulo ... "/>
+        <button type="submit" class="btn btn-primary search-button">
           Search
         </button>
       </div>
  </form>
  </div>
 
- <a href='{% url "store_admin_app:product-create-view" %}'
-    <button class="btn btn-primary">
-      Add Product
-    </button>
-    </a>
+    <div class="create-button-div">
+     <a href='{% url "store_admin_app:product-create-view" %}'>
+        <button class="btn btn-primary create-button">
+          ADICIONAR +
+        </button>
+        </a>
+        </div>
 
-<h2>Products List </h2>
-  {% for prod in products %}
-<div class='product-list'>
-  <a class='product-list-link' href="#">
-      <p class='product-list-element'>{{ prod }}</p>
-  </a>
-</div>
-    {% endfor %}
-
+ <div class="product-list-div">
+        <h2>Lista de Productos </h2>
+        <div class="product-list-elements-div">
+              {% for prod in products %}
+                    <div class='product-list'>
+                      <a class='product-list-link' href="{% url 'store_admin_app:product-crud-view' id=prod.id %}">
+                          <p class='product-list-element'>{{ prod.title }} {% if prod.category != None %} - {{prod.category}}
+                              {% endif %} -- {{prod.subtag}}</p>
+                      </a>
+                    </div>
+                {% endfor %}
+        </div>
+     </div>
  </div>
 
 {% endblock content %}

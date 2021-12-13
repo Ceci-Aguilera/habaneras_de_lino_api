@@ -1,4 +1,4 @@
-.product-div{
+.custom-colors-div{
   margin-top: 100px;
   margin-left: auto !important;
   margin-right: auto !important;
@@ -16,13 +16,12 @@ h1{
   color: #244c77;
 }
 
-.product-form{
+.custom-colors-form{
   margin-top: 50px;
-  margin-bottom: 200px;
 }
 
 .form-field-div{
-  margin-top: 20px;
+  margin-top: 30px;
 }
 
 .form-field-div > p{
@@ -42,39 +41,41 @@ h1{
   color: #244c77;
 }
 
-.add-extra-img-field{
-  color: white !important;
-  font-size: 18px;
-  background-color: dodgerblue !important;
-  border-color: dodgerblue !important;
+#custom-colors-p{
+  margin-left:10px;
 }
 
-.add-extra-img-field:after,
-.add-extra-img-field:active,
-.add-extra-img-field:focus,
-.add-extra-img-field:hover{
-    background-color: #0d6efd!important;
-    border-color: #0d6efd!important;
+.row{
+  margin-left: auto !important;
+  margin-right: auto !important;
+  text-align: center;
 }
 
-.alert-div{
+.save-button-div, .delete-button-div{
   margin-top: 50px;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  width: 200px !important;
+}
+
+.save-button, .delete-button{
+  width: 100%;
 }
 
 .alert{
-  margin-top: 5px;
+  margin-top: 50px;
 }
 
-.login-button{
+.save-button{
     background-color: dodgerblue !important;
     border-color: dodgerblue !important;
 
 }
 
-.login-button:after,
-.login-button:active,
-.login-button:focus,
-.login-button:hover{
+.save-button:after,
+.save-button:active,
+.save-button:focus,
+.save-button:hover{
     background-color: #0d6efd!important;
     border-color: #0d6efd!important;
 }

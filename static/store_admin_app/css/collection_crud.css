@@ -1,11 +1,11 @@
-.product-div{
+.collection-div{
   margin-top: 100px;
   margin-left: auto !important;
   margin-right: auto !important;
   width: 80%;
   max-width: 600px;
   min-width: 300px;
-  margin-bottom: 200px;
+  margin-bottom: 200px;  
   color: rgba(100,100,100,1) !important;
   font-family: "Roboto, sans-serif";
   font-size: 1.2em;
@@ -16,13 +16,12 @@ h1{
   color: #244c77;
 }
 
-.product-form{
+.collection-form{
   margin-top: 50px;
-  margin-bottom: 200px;
 }
 
 .form-field-div{
-  margin-top: 20px;
+  margin-top: 50px;
 }
 
 .form-field-div > p{
@@ -42,39 +41,37 @@ h1{
   color: #244c77;
 }
 
-.add-extra-img-field{
-  color: white !important;
-  font-size: 18px;
-  background-color: dodgerblue !important;
-  border-color: dodgerblue !important;
+.row{
+  margin-left: auto !important;
+  margin-right: auto !important;
+  text-align: center;
 }
 
-.add-extra-img-field:after,
-.add-extra-img-field:active,
-.add-extra-img-field:focus,
-.add-extra-img-field:hover{
-    background-color: #0d6efd!important;
-    border-color: #0d6efd!important;
-}
-
-.alert-div{
+.save-button-div, .delete-button-div{
   margin-top: 50px;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  width: 200px !important;
+}
+
+.save-button, .delete-button{
+  width: 100%;
 }
 
 .alert{
-  margin-top: 5px;
+  margin-top: 50px;
 }
 
-.login-button{
+.save-button{
     background-color: dodgerblue !important;
     border-color: dodgerblue !important;
 
 }
 
-.login-button:after,
-.login-button:active,
-.login-button:focus,
-.login-button:hover{
+.save-button:after,
+.save-button:active,
+.save-button:focus,
+.save-button:hover{
     background-color: #0d6efd!important;
     border-color: #0d6efd!important;
 }

@@ -1,4 +1,4 @@
-.category-div{
+.collection-div{
   margin-top: 100px;
   margin-left: auto !important;
   margin-right: auto !important;
@@ -53,7 +53,7 @@ h1{
     border-color: #0d6efd!important;
 }
 
-.category-list-div{
+.collection-list-div{
   margin-top: 50px;
   margin-left: auto !important;
   margin-right: auto !important;
@@ -64,15 +64,15 @@ h2{
   color: #244c77;
 }
 
-.category-list-elements-div{
+.collection-list-elements-div{
   margin-top: 30px;
   margin-left: auto !important;
   margin-right: auto !important;
   text-align: center;
 }
 
-.category-list{
-  border: 1px solid rgb(200, 200, 200);
+.collection-list{
+   border: 1px solid rgb(200, 200, 200);
   border-radius: 8px;
   margin-top: 10px;
   height: 40px;
@@ -80,15 +80,17 @@ h2{
   text-align: center;
 }
 
-.category-list-link{
+.collection-list-link{
   text-decoration: none !important;
   color: black !important;
   vertical-align: middle;
   text-align: center;
 }
 
-.category-list-element{
+.collection-list-element{
   vertical-align: middle;
   padding-top: 0px;
   text-align: center;
 }
+
+

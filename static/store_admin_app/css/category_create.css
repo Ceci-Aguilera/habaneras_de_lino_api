@@ -1,0 +1,60 @@
+.category-div{
+  margin-top: 100px;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  width: 80%;
+  max-width: 600px;
+  min-width: 300px;
+  margin-bottom: 200px;
+  color: rgba(100,100,100,1) !important;
+  font-family: "Roboto, sans-serif";
+  font-size: 1.2em;
+}
+
+h1{
+  text-align: center;
+  color: #244c77;
+}
+
+.category-form{
+  margin-top: 50px;
+}
+
+.form-field-div{
+  margin-top: 50px;
+}
+
+.form-field-div > p{
+  padding: 0px !important;
+  margin: 0px !important;
+}
+
+.login-button-div{
+  margin-top: 50px;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  width: 150px;
+}
+
+.form-label{
+  font-size: 1.3em;
+  color: #244c77;
+}
+
+.alert{
+  margin-top: 50px;
+}
+
+.login-button{
+    background-color: dodgerblue !important;
+    border-color: dodgerblue !important;
+
+}
+
+.login-button:after,
+.login-button:active,
+.login-button:focus,
+.login-button:hover{
+    background-color: #0d6efd!important;
+    border-color: #0d6efd!important;
+}

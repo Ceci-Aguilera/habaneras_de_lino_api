@@ -1,0 +1,74 @@
+{% extends "store_admin_app/base.html" %}
+{% load static %}
+{% load custom_tags %}
+
+{% block content %}
+
+
+<div class = 'order-div'>
+
+ <link rel="stylesheet" type='text/css' href="{% static 'store_admin_app/css/orders.css'%}?{% now 'U' %}">
+
+
+    <h1>
+        Ordenes
+    </h1>
+
+
+<div class = 'search-form-div'>
+
+    <form method="post">
+       {% csrf_token %}
+      <div class="input-group mb-3">
+        <input  name="search_order" type="text" class="form-control" placeholder="Buscar por nomber/apellido/email ... "/>
+        <button type="submit" class="btn btn-primary search-button">
+          Buscar
+        </button>
+      </div>
+ </form>
+    </div>
+
+    <div class = 'filter-status-form-div'>
+
+    <form method="post">
+       {% csrf_token %}
+      <div class="input-group mb-3">
+        <label for="filter_order_status" class="form-label">Estatus de la Orden</label>
+              <select class="form-select" name="filter_order_status" id="filter_order_status" value="filter_order_status" onchange="submit();">
+                  {% if default_order_status == "All" %}
+                    <option value="All" selected>All</option>
+                  {% else %}
+                     <option value="All">All</option>
+                  {% endif %}
+                  {% for key, val  in status_map.items %}
+                      {% if default_order_status == key %}
+                         <option value="{{key}}" selected>{{val}}</option>
+                      {% else %}
+                          <option value="{{key}}">{{val}}</option>
+                      {% endif %}
+                {% endfor %}
+              </select>
+      </div>
+ </form>
+
+
+
+ </div>
+
+  <div class="order-list-div">
+        <h2>Lista de Ordenes </h2>
+            <div class="order-list-elements-div">
+              {% for order in orders %}
+                <div class='order-list'>
+                        <a class='order-list-link' href="{% url 'store_admin_app:order-detail-view' id=order.id %}">
+                      <p class='order-list-element'>{{ order }} - {{status_map | keyvalue:order.status}}</p>
+                  </a>
+                </div>
+             {% endfor %}
+            </div>
+         </div>
+
+
+ </div>
+
+{% endblock content %}

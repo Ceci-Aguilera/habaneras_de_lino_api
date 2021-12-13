@@ -3,33 +3,50 @@
 
 {% block content %}
 
- <link rel="stylesheet" type='text/css' href="{% static 'store_admin_app/css/index.css' %}">
+ <link rel="stylesheet" type='text/css' href="{% static 'store_admin_app/css/index.css'%}?{% now 'U' %}">
 
- <!-- <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-   <div class="container-fluid">
-     <a class="navbar-brand" href="#">Admin Panel</a>
-     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-       <span class="navbar-toggler-icon"></span>
-     </button>
-     <div class="collapse navbar-collapse" id="navbarNav">
-       <ul class="navbar-nav">
-         <li class="nav-item">
-           <a class="nav-link active" aria-current="page" href="#">Statistics</a>
-         </li>
-         <li class="nav-item">
-           <a class="nav-link" href="#">Categories</a>
-         </li>
-         <li class="nav-item">
-           <a class="nav-link" href="#">Products</a>
-         </li>
-         <li class="nav-item">
-           <a class="nav-link" href="#">Orders</a>
-         </li>
-         <li class="nav-item">
-           <a class="nav-link" href="{% url 'store_admin_app:logout-view' %}">Logout</a>
-         </li>
-       </ul>
+     <div class="index-wrapper">
+        <h1>
+        Estadisticas de la Tienda
+       </h1>
+
+      <div class="cat-statistic-div">
+          <h3>
+         Top 10 productos (ventas)
+        </h3>
+
+        <div class="list-div">
+          <div class='list-wrapper'>
+         {% for prod in top_ten_products %}
+          <div class='list-element'>
+           <p>{{ prod.title}} - {{prod.amount_sold}}</p>
+          </div>
+         {% endfor %}
+        </div>
+        </div>
+      </div>
+
+
+
+      <div class="cat-statistic-div">
+          <h3>
+         Productos organizados por ventas (max -> min)
+        </h3>
+
+        <div class="list-div">
+         <div class='list-wrapper'>
+         {% for prod in top_products %}
+           <div class='list-element'>
+           <p>{{ prod.title}} - {{prod.amount_sold}}</p>
+          </div>
+         {% endfor %}
+        </div>
+        </div>
+      </div>
+
+
+
      </div>
-   </div>
- </nav> -->
+
+
 {% endblock content %}
