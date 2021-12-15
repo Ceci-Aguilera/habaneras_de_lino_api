@@ -348,7 +348,6 @@ def CreateProductView(request):
 
 		try:
 			messages = []
-			print(messages == [])
 			title = request.POST['title']
 			if title.isspace() or (not title):
 				messages.append("Introduzca el titulo del producto")
@@ -363,9 +362,10 @@ def CreateProductView(request):
 
 			subtag = request.POST['subtag']
 
-			if request.POST['category'].isspace() or (not request.POST['category']):
+			if (not 'category' in request.POST) or (not request.POST['category']) or request.POST['category'].isspace():
 				messages.append("Introduzca la categoria del producto")
 			else:
+				print("Not Ok")
 				category = Category.objects.get(title = request.POST['category'])
 
 			if 'image' in request.FILES:

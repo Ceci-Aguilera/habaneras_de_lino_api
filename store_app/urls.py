@@ -11,6 +11,7 @@ urlpatterns = [
 	url(r'^collections/$',CustomCollectionListView.as_view(),name='collection-list-view'),
 	url(r'^collections/men/$',CustomCollectionMenListView.as_view(),name='collection-list-men-view'),
 	url(r'^collections/women/$',CustomCollectionWomenListView.as_view(),name='collection-list-woman-view'),
+	url(r'^category/title/(?P<title>[\w\-]+)/$',CategoryTitleDetailView.as_view(),name='category-title-view'),
 	url(r'^collection/title/(?P<title>[\w\-]+)/$',CustomCollectionTitleDetailView.as_view(),name='collection-title-view'),
 	url(r'^products-extra-tags/$',ProductsPerExtraTag.as_view(),name='products-extra-tags-list-view'),
 	url(r'^collections/(?P<id>[0-9]+)/$',CustomCollectionDetailView.as_view(),name='collection-list-view'),

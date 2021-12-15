@@ -115,6 +115,18 @@ class ProductDetailView(RetrieveAPIView):
 	queryset = Product.objects.all()
 
 
+class CategoryTitleDetailView(APIView):
+	authentication_classes = []
+	serializer_class = CustomCollectionSerializer
+	model = CustomCollection
+
+	def get(self,request, *args, **kwargs):
+		title = kwargs['title']
+		category = Category.objects.all().get(title=title)
+		category_serializer = CategorySerializer(category).data
+		return Response({"Category": category_serializer}, status=status.HTTP_200_OK)
+
+
 class CustomCollectionTitleDetailView(APIView):
 	authentication_classes = []
 	serializer_class = CustomCollectionSerializer

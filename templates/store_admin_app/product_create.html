@@ -44,7 +44,7 @@
     {% csrf_token %}
 
     <div class="mb-3 form-field-div">
-      <label for="title" class="form-label form-field-label">Titulo de la Coleccion</label>
+      <label for="title" class="form-label form-field-label">Titulo del Producto</label>
       <input type="text" name="title" class="form-control" id="title">
     </div>
 
@@ -60,7 +60,7 @@
 
     <div class="mb-3 form-field-div">
       <label for="image" class="form-label form-field-label">Imagen</label>
-      <input type="file" name="image" class="form-control" id="image">
+      <input type="file" name="image" class="form-control" id="image" placeholder="Escoger Imagen">
     </div>
 
     <div class="mb-3 form-field-div">
@@ -94,7 +94,7 @@
     <div class="mb-3 form-field-div">
       <label for="subtag" class="form-label form-field-label">Subcategoria</label>
       <select class="form-select" name="subtag"  id="subtag" value="subtag">
-        <option value="ARRIBA">ARRIBA</option>
+        <option value="ARRIBA" selected>ARRIBA</option>
         <option value="ABAJO">ABAJO</option>
         <option value="VESTIDO">VESTIDO</option>
         <option value="ACCESORIO">ACCESORIO</option>
