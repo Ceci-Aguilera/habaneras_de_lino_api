@@ -104,13 +104,27 @@ def ProductsView(request):
 		return redirect('/store-admin/login/')
 
 	if request.method == "GET":
+		collections = CustomCollection.objects.all()
 		products = Product.objects.all()
-		return render(request, "store_admin_app/products.html",{"products":products})
+		return render(request, "store_admin_app/products.html",{"products":products,"collections":collections, "default_collection":"All"})
 
 	elif request.method == 'POST':
-		query = request.POST['search_product']
-		products = Product.objects.filter(title__icontains=query)
-		return render(request, "store_admin_app/products.html",{"products":products})
+		collections = CustomCollection.objects.all()
+
+		if 'search_product' in request.POST:
+			default_collection = "All"
+			query = request.POST['search_product']
+			products = Product.objects.filter(title__icontains=query)
+		else:
+			query = request.POST['filter_collection']
+			if query == 'All':
+				default_collection = "All"
+				products = Product.objects.all()
+			else:
+				default_collection = query
+				products = Product.objects.filter(collection__title=query)
+
+		return render(request, "store_admin_app/products.html",{"products":products,"collections":collections, "default_collection": default_collection})
 
 
 #=============================================================================
@@ -126,21 +140,21 @@ def OrdersView(request):
 
 	if request.method == "GET":
 
-		orders = Order.objects.all()
+		orders = Order.objects.all().filter(payment__isnull=False)
 		return render(request, "store_admin_app/orders.html",{"orders":orders, "status_map": status_map, "default_order_status": "All"})
 
 	elif request.method == 'POST':
 		if 'search_order' in request.POST:
 			default_order_status = "All"
 			query = request.POST['search_order']
-			orders = Order.objects.filter(Q(user_first_name__icontains=query) | Q(user_last_name__icontains=query) | Q(email__icontains=query))
+			orders = Order.objects.filter(Q(user_first_name__icontains=query) | Q(user_last_name__icontains=query) | Q(email__icontains=query)).filter(payment__isnull=False)
 		else:
 			query = request.POST['filter_order_status']
 			default_order_status = query
 			if query == 'All':
-				orders = Order.objects.all()
+				orders = Order.objects.all().filter(payment__isnull=False)
 			else:
-				orders = Order.objects.filter(status=query)
+				orders = Order.objects.filter(status=query).filter(payment__isnull=False)
 		return render(request, "store_admin_app/orders.html",{"orders":orders, "status_map": status_map, "default_order_status": default_order_status})
 
 
@@ -385,6 +399,7 @@ def CreateProductView(request):
 				product = Product.objects.create(title=title, code=code, image=image, s_image=s_image, price=price, subtag=subtag,
 												 category=category, extra_tag=extra_tag, description=description)
 				ProductImage.objects.create(product=product, image=product.image, type='first')
+				ProductImage.objects.create(product=product, image=product.s_image, type='second')
 
 			else:
 				return render(request, "store_admin_app/product_create.html",
@@ -681,7 +696,7 @@ def ProductCRUDView(request, id):
 				new_image = request.FILES['image']
 				product.image = new_image
 				product.save()
-				ProductImage.objects.filter(product__id=product.id, type='first').delete()
+				ProductImage.objects.get(product__id=product.id, type='first').delete()
 				ProductImage.objects.create(product=product, image=product.image, type='first')
 			except:
 				pass
@@ -690,10 +705,7 @@ def ProductCRUDView(request, id):
 				new_s_image = request.FILES['product_s_image']
 				product.s_image = new_s_image
 				product.save()
-				old_s_image = ProductImage.objects.filter(product__id=product.id, type='second')
-
-				if old_s_image.image != None and old_s_image.image:
-					old_s_image.delete()
+				ProductImage.objects.get(product__id=product.id, type='second').delete()
 
 				ProductImage.objects.create(product=product, image=product.s_image, type='second')
 			except:
@@ -757,3 +769,117 @@ def ProductCRUDView(request, id):
 
 		return redirect('/store-admin/products/')
 
+
+
+
+def CuponsListView(request):
+	if request.user is None or request.user.is_authenticated == False:
+		return redirect('/store-admin/login/')
+
+	if request.method == "GET":
+		coupons = Coupon.objects.all()
+		return render(request, "store_admin_app/coupons.html", {"coupons": coupons})
+
+	elif request.method == 'POST':
+		query = request.POST['search_coupon']
+		coupons = Coupon.objects.filter(user_email__icontains=query)
+		return render(request, "store_admin_app/coupons.html", {"coupons": coupons})
+
+
+
+
+def CuponsCreatelView(request):
+	if request.user is None or request.user.is_authenticated == False:
+		return redirect('/store-admin/login/')
+
+	if request.method == "GET":
+		return render(request, "store_admin_app/coupon_create.html", {"message": "No Error"})
+
+	elif request.method == 'POST':
+		try:
+			user_email = request.POST['user_email']
+			if user_email.isspace() or (not user_email):
+				return render(request, "store_admin_app/coupon_create.html",
+							  {"message": "Introduzca el email del usuario"})
+
+			code = request.POST['code']
+			if code.isspace() or (not code):
+				return render(request, "store_admin_app/coupon_create.html",
+							  {"message": "Introduzca el codigo del cupon"})
+
+			discount_type = request.POST['discount_type']
+
+			discount = request.POST['discount']
+			if discount.isspace() or (not discount):
+				return render(request, "store_admin_app/coupon_create.html",
+							  {"message": "Introduzca el descuento del cupon"})
+
+			how_many_items = request.POST['how_many_items']
+			if how_many_items.isspace() or (not how_many_items):
+				return render(request, "store_admin_app/coupon_create.html",
+							  {"message": "Introduzca la cantidad de productos"})
+
+
+			Coupon.objects.create(user_email = user_email, code = code, discount=discount, discount_type = discount_type, how_many_items = how_many_items, cart=None, taken=False)
+			return redirect('/store-admin/coupons/')
+		except:
+			pass
+		return redirect('/store-admin/coupons/')
+
+
+
+def CuponCRUDView(request, id):
+	if request.user is None or request.user.is_authenticated == False:
+		return redirect('/store-admin/login/')
+
+	if request.method == "GET":
+		coupon = Coupon.objects.get(id=id)
+		return render(request, "store_admin_app/coupon_crud.html",{"coupon":coupon,
+																			 "message": "No Error"})
+
+	elif request.method == 'POST':
+		coupon = Coupon.objects.get(id=id)
+
+		if "save" in request.POST:
+			try:
+				user_email = request.POST['user_email']
+				if user_email.isspace() or (not user_email):
+					return render(request, "store_admin_app/coupon_crud.html",
+								  {"coupon": coupon,
+								   "message": "Introduzca el email del cliente"})
+
+				code = request.POST['code']
+				if code.isspace() or (not code):
+					return render(request, "store_admin_app/coupon_crud.html",
+								  {"coupon": coupon,
+								   "message": "Introduzca el codigo del cupon"})
+
+				discount = request.POST['discount']
+				if discount.isspace() or (not discount):
+					return render(request, "store_admin_app/coupon_crud.html",
+								  {"coupon": coupon,
+								   "message": "Introduzca el descuento del cupon"})
+
+				how_many_items = request.POST['how_many_items']
+				if how_many_items.isspace() or (not how_many_items):
+					return render(request, "store_admin_app/coupon_crud.html",
+								  {"coupon": coupon,
+								   "message": "Introduzca la cantidad de productos"})
+
+				discount_type = request.POST['discount_type']
+
+				coupon.user_email = user_email
+				coupon.code = code
+				coupon.discount = discount
+				coupon.how_many_items = how_many_items
+				coupon.discount_type = discount_type
+
+				coupon.save()
+			except:
+				return render(request, "store_admin_app/coupon_crud.html",
+							  {"coupon": coupon,
+							   "message": "Error"})
+		else:
+			coupon.delete()
+
+		return redirect('/store-admin/coupons/')

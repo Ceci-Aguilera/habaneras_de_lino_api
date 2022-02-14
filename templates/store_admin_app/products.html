@@ -24,6 +24,34 @@
  </form>
  </div>
 
+
+        <div class = 'filter-collection-form-div'>
+
+    <form method="post">
+       {% csrf_token %}
+      <div class="input-group mb-3">
+        <label for="filter_collection" class="form-label">Coleccion</label>
+              <select class="form-select" name="filter_collection" id="filter_collection" value="filter_collection" onchange="submit();">
+                  {% if default_collection == "All" %}
+                    <option value="All" selected>All</option>
+                  {% else %}
+                     <option value="All">All</option>
+                  {% endif %}
+                  {% for coll  in collections %}
+                      {% if default_collection == coll.title %}
+                         <option value="{{coll.title}}" selected>{{coll.title}}</option>
+                      {% else %}
+                          <option value="{{coll.title}}">{{coll.title}}</option>
+                      {% endif %}
+                {% endfor %}
+              </select>
+      </div>
+ </form>
+
+
+
+ </div>
+
     <div class="create-button-div">
      <a href='{% url "store_admin_app:product-create-view" %}'>
         <button class="btn btn-primary create-button">
@@ -38,8 +66,7 @@
               {% for prod in products %}
                     <div class='product-list'>
                       <a class='product-list-link' href="{% url 'store_admin_app:product-crud-view' id=prod.id %}">
-                          <p class='product-list-element'>{{ prod.title }} {% if prod.category != None %} - {{prod.category}}
-                              {% endif %} -- {{prod.subtag}}</p>
+                          <p class='product-list-element'>{{ prod.title }}</p>
                       </a>
                     </div>
                 {% endfor %}

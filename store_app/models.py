@@ -16,6 +16,11 @@ EXTRA_TAG_CHOICES = (
     ('KIDS', 'KIDS'),
 )
 
+DISCOUNT_CHOICES = (
+    ('POR CIENTO', 'POR CIENTO'),
+    ('FIJO', 'FIJO'),
+)
+
 
 class CustomColor(models.Model):
 	title = models.CharField(max_length=256, default='')
@@ -137,4 +142,16 @@ class Order(models.Model):
 			return self.user_first_name + " " + self.user_last_name + " - " + self.ordered_date.strftime("%b. %-d, %Y, %-I:%M %p")
 
 	def get_total_price(self):
-		return self.cart.cost + self.cart.cost * 0.07
+		return self.cart.cost
+
+class Coupon(models.Model):
+	user_email = models.CharField(max_length=256, default='')
+	code = models.CharField(max_length=256, default='')
+	taken = models.BooleanField(default=False)
+	cart = models.ForeignKey(Cart, null=True, on_delete=models.SET_NULL,blank=True)
+	discount_type = models.CharField(max_length=256, choices=DISCOUNT_CHOICES, default='POR CIENTO')
+	discount = models.FloatField(default=0.0)
+	how_many_items = models.IntegerField(default=0)
+
+	def __str__(self):
+		return self.user_email + " - " + self.code

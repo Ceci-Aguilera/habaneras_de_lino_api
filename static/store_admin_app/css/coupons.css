@@ -1,4 +1,4 @@
-.product-div{
+.collection-div{
   margin-top: 100px;
   margin-left: auto !important;
   margin-right: auto !important;
@@ -32,7 +32,7 @@ h1{
 .create-button-div{
   margin-top: 50px;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
 }
 
 .create-button, .search-button{
@@ -53,7 +53,7 @@ h1{
     border-color: #0d6efd!important;
 }
 
-.product-list-div{
+.collection-list-div{
   margin-top: 50px;
   margin-left: auto !important;
   margin-right: auto !important;
@@ -62,43 +62,35 @@ h1{
 
 h2{
   color: #244c77;
-  text-align: center;
 }
 
-.product-list-elements-div{
-   margin-top: 30px;
+.collection-list-elements-div{
+  margin-top: 30px;
   margin-left: auto !important;
   margin-right: auto !important;
   text-align: center;
 }
 
-.product-list{
+.collection-list{
    border: 1px solid rgb(200, 200, 200);
   border-radius: 8px;
   margin-top: 10px;
   height: 40px;
-  width: 600px;
+  width: 400px;
   text-align: center;
 }
 
-.product-list-link{
- text-decoration: none !important;
+.collection-list-link{
+  text-decoration: none !important;
   color: black !important;
   vertical-align: middle;
   text-align: center;
 }
 
-.product-list-element{
+.collection-list-element{
   vertical-align: middle;
   padding-top: 0px;
   text-align: center;
 }
 
-.filter-collection-form-div{
-  margin-top: 50px;
-  max-width: 500px;
-  min-width: 300px;
-  margin-left: auto !important;
-  margin-right: auto !important;
-}
 

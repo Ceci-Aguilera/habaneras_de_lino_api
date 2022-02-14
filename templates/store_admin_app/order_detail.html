@@ -78,27 +78,27 @@
 
 
 
-            {% if payment.refund == "No refund asked" or payment.refund == "Error" %}
-               <div class="form-check form-field-div">
-                   <p class="refund-status-p">Refund status: {{payment.refund}}</p>
-                  <input class="form-check-input" type="checkbox" name="make_refund" id="make_refund" onclick="refundButton()">
-                  <label class="form-check-label form-field-label" for="make_refund" id="checkbox-button">
-                    Hacer Refund/Devolver Dinero a Cliente
-                  </label>
-                </div>
+<!--            {% if payment.refund == "No refund asked" or payment.refund == "Error" %}-->
+<!--               <div class="form-check form-field-div">-->
+<!--                   <p class="refund-status-p">Refund status: {{payment.refund}}</p>-->
+<!--                  <input class="form-check-input" type="checkbox" name="make_refund" id="make_refund" onclick="refundButton()">-->
+<!--                  <label class="form-check-label form-field-label" for="make_refund" id="checkbox-button">-->
+<!--                    Hacer Refund/Devolver Dinero a Cliente-->
+<!--                  </label>-->
+<!--                </div>-->
 
-                <div class="button-div save-button-div">
-                    <button type="submit" class="btn btn-danger" name="refund" value="refund" id="refund-button" style="display:none">
-                         Hacer Refund/Devolver dinero
-                     </button>
-                </div>
+<!--                <div class="button-div save-button-div">-->
+<!--                    <button type="submit" class="btn btn-danger" name="refund" value="refund" id="refund-button" style="display:none">-->
+<!--                         Hacer Refund/Devolver dinero-->
+<!--                     </button>-->
+<!--                </div>-->
 
 
-           {% else %}
-            <p>
-                Refund result: {{payment.refund}}
-            </p>
-           {% endif %}
+<!--           {% else %}-->
+<!--            <p>-->
+<!--                Refund result: {{payment.refund}}-->
+<!--            </p>-->
+<!--           {% endif %}-->
 
     </form>
         </div>

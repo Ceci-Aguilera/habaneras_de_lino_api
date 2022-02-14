@@ -1,0 +1,52 @@
+{% extends "store_admin_app/base.html" %}
+{% load static %}
+
+{% block content %}
+
+
+<div class = 'collection-div'>
+
+
+ <link rel="stylesheet" type='text/css' href="{% static 'store_admin_app/css/coupons.css'%}?{% now 'U' %}">
+
+
+    <h1>
+        Cupones
+    </h1>
+
+    <div class = 'search-form-div'>
+ <form method="post">
+       {% csrf_token %}
+      <div class="input-group mb-3">
+        <input  name="search_coupon" type="text" class="form-control" placeholder="Buscar por Email ... "/>
+        <button type="submit" class="btn btn-primary search-button">
+          Buscar
+        </button>
+      </div>
+ </form>
+
+<div class="create-button-div">
+    <a href='{% url "store_admin_app:coupon-create-view" %}'>
+       <button class="btn btn-primary create-button">
+         ADICIONAR +
+       </button>
+       </a>
+</div>
+
+ </div>
+
+    <div class="collection-list-div">
+        <h2>Lista de Cupones </h2>
+        <div class="collection-list-elements-div">
+          {% for coupon in coupons %}
+        <div class='collection-list'>
+                <a class='collection-list-link' href="{% url 'store_admin_app:coupon-crud-view' id=coupon.id %}">
+              <p class='collection-list-element'>{{ coupon }}</p>
+          </a>
+        </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

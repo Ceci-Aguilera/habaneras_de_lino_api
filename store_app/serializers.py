@@ -5,11 +5,16 @@ from .models import *
 # ======================================================================================
 class CategorySerializer(serializers.ModelSerializer):
 
-	image = serializers.ImageField(use_url=True)
+	image = serializers.SerializerMethodField('get_image_url')
 
 	class Meta:
 		model = Category
 		fields = '__all__'
+
+	def get_image_url(self, obj):
+		request = self.context.get("request")
+		return request.build_absolute_uri(obj.image.url)
+
 
 class CategorySimpleSerializerFilter(serializers.ModelSerializer):
 
@@ -25,8 +30,8 @@ class CustomColorsSerializer(serializers.ModelSerializer):
 
 # ======================================================================================
 class ProductSerializer(serializers.ModelSerializer):
-	image = serializers.ImageField(use_url=True)
-	s_image = serializers.ImageField(use_url=True)
+	image = serializers.SerializerMethodField('get_image_url')
+	s_image = serializers.SerializerMethodField('get_s_image_url')
 	category = CategorySerializer()
 	available_colors = CustomColorsSerializer(many=True)
 	description = serializers.CharField(required=False, allow_blank=True)
@@ -35,15 +40,29 @@ class ProductSerializer(serializers.ModelSerializer):
 		model = Product
 		exclude = ('collection', )
 
+	def get_image_url(self, obj):
+		request = self.context.get("request")
+		return request.build_absolute_uri(obj.image.url)
+
+	def get_s_image_url(self, obj):
+		request = self.context.get("request")
+		return request.build_absolute_uri(obj.s_image.url)
 
 class CustomCollectionSerializer(serializers.ModelSerializer):
 	description = serializers.CharField(required=False, allow_blank=True)
 	all_products_per_collection = ProductSerializer(source='products_per_collection_set', many=True)
-	image = serializers.ImageField(use_url=True)
+	image = serializers.SerializerMethodField('get_image_url')
 
 	class Meta:
 		model = CustomCollection
 		fields = '__all__'
+
+	def get_image_url(self, obj):
+		request = self.context.get("request")
+		return request.build_absolute_uri(obj.image.url)
+
+
+
 
 
 class CustomCollectionSimpleSerializerFilter(serializers.ModelSerializer):
@@ -54,21 +73,29 @@ class CustomCollectionSimpleSerializerFilter(serializers.ModelSerializer):
 
 
 class ProductImageSimpleSerializer(serializers.ModelSerializer):
+	image = serializers.SerializerMethodField('get_image_url')
 
 	class Meta:
 		model = ProductImage
 		fields = ['image', 'id', 'pk']
 
+	def get_image_url(self, obj):
+		request = self.context.get("request")
+		return request.build_absolute_uri(obj.image.url)
+
 
 # ======================================================================================
 class CategorySimpleSerializer(serializers.ModelSerializer):
-
-	image = serializers.ImageField(use_url=True)
+	image = serializers.SerializerMethodField('get_image_url')
 	products = ProductSerializer(source='product_set', many=True)
 
 	class Meta:
 		model = Category
 		fields = ('title', 'image','id', 'products')
+
+	def get_image_url(self, obj):
+		request = self.context.get("request")
+		return request.build_absolute_uri(obj.image.url)
 
 # ======================================================================================
 class CartSimpleSerializer(serializers.ModelSerializer):
@@ -122,3 +149,11 @@ class OrderSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Order
 		fields = '__all__'
+
+# ======================================================================================
+
+class CouponSerializer(serializers.ModelSerializer):
+
+	class Meta:
+		model = Coupon
+		exclude = ('cart',)

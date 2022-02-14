@@ -35,7 +35,7 @@ INSTALLED_APPS = [
 	'django.contrib.sessions',
 	'django.contrib.messages',
 	'cloudinary_storage',
-	'cloudinary',
+	#'cloudinary',
 	'corsheaders',
 	'rest_framework',
 	'knox',

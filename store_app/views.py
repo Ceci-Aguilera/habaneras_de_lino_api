@@ -35,6 +35,14 @@ class CustomCollectionListView(ListAPIView):
 	model = CustomCollection
 	queryset = CustomCollection.objects.all()
 
+	def get_serializer_context(self):
+		context = super(CustomCollectionListView, self).get_serializer_context()
+		context.update({"request": self.request})
+		return context
+
+
+
+
 
 class ProductImagesView(APIView):
 	authentication_classes = []
@@ -45,26 +53,44 @@ class ProductImagesView(APIView):
 		return Response ({"Images": images_serializer}, status=status.HTTP_200_OK)
 
 
+
+
+
 class CategoryListView(ListAPIView):
 	authentication_classes = []
 	serializer_class = CategorySimpleSerializer
 	model = Category
 	queryset = Category.objects.all()
 
+	def get_serializer_context(self):
+		context = super(CategoryListView, self).get_serializer_context()
+		context.update({"request": self.request})
+		return context
+
+
+
+
+
 class CategoryMenListView(APIView):
 	authentication_classes = []
 	def get(self, request, format=None):
 		info_to_serialize = Category.objects.filter(product_set__extra_tag='MEN').distinct()
-		men_category = CategorySimpleSerializer(info_to_serialize, many=True).data
+		men_category = CategorySimpleSerializer(info_to_serialize, many=True, context={"request":request}).data
 		return Response({"Categories": men_category}, status=status.HTTP_200_OK)
+
+
+
 
 class CategoryWomenListView(ListAPIView):
 	authentication_classes = []
 
 	def get(self, request, format=None):
 		info_to_serialize = Category.objects.filter(product_set__extra_tag='WOMEN').distinct()
-		women_category = CategorySimpleSerializer(info_to_serialize, many=True).data
+		women_category = CategorySimpleSerializer(info_to_serialize, many=True, context={"request":request}).data
 		return Response({"Categories": women_category}, status=status.HTTP_200_OK)
+
+
+
 
 
 class CategoryDetailView(RetrieveAPIView):
@@ -74,6 +100,14 @@ class CategoryDetailView(RetrieveAPIView):
 	lookup_field = 'id'
 	queryset = Category.objects.all()
 
+	def get_serializer_context(self):
+		context = super(CategoryDetailView, self).get_serializer_context()
+		context.update({"request": self.request})
+		return context
+
+
+
+
 
 class CustomCollectionDetailView(RetrieveAPIView):
 	authentication_classes = []
@@ -82,21 +116,36 @@ class CustomCollectionDetailView(RetrieveAPIView):
 	lookup_field = 'id'
 	queryset = CustomCollection.objects.all()
 
+	def get_serializer_context(self):
+		context = super(CustomCollectionDetailView, self).get_serializer_context()
+		context.update({"request": self.request})
+		return context
+
+
+
+
+
 
 class CustomCollectionMenListView(APIView):
 	authentication_classes = []
 	def get(self, request, format=None):
 		info_to_serialize = CustomCollection.objects.filter(products_per_collection_set__extra_tag='MEN').distinct()
-		men_collection = CustomCollectionSerializer(info_to_serialize, many=True).data
+		men_collection = CustomCollectionSerializer(info_to_serialize, many=True, context={"request":request}).data
 		return Response({"Collections": men_collection}, status=status.HTTP_200_OK)
+
+
+
+
 
 class CustomCollectionWomenListView(ListAPIView):
 	authentication_classes = []
 
 	def get(self, request, format=None):
-		info_to_serialize = Category.objects.filter(products_per_collection_set__extra_tag='WOMEN').distinct()
-		women_collection = CustomCollectionSerializer(info_to_serialize, many=True).data
+		info_to_serialize = CustomCollection.objects.filter(products_per_collection_set__extra_tag='WOMEN').distinct()
+		women_collection = CustomCollectionSerializer(info_to_serialize, many=True, context={"request":request}).data
 		return Response({"Collections": women_collection}, status=status.HTTP_200_OK)
+
+
 
 
 
@@ -106,6 +155,15 @@ class ProductListView(ListAPIView):
 	model = Product
 	queryset = Product.objects.all()
 
+	def get_serializer_context(self):
+		context = super(ProductListView, self).get_serializer_context()
+		context.update({"request": self.request})
+		return context
+
+
+
+
+
 
 class ProductDetailView(RetrieveAPIView):
 	authentication_classes = []
@@ -113,6 +171,15 @@ class ProductDetailView(RetrieveAPIView):
 	model = Product
 	lookup_field = 'id'
 	queryset = Product.objects.all()
+
+	def get_serializer_context(self):
+		context = super(ProductDetailView, self).get_serializer_context()
+		context.update({"request": self.request})
+		return context
+
+
+
+
 
 
 class CategoryTitleDetailView(APIView):
@@ -123,8 +190,62 @@ class CategoryTitleDetailView(APIView):
 	def get(self,request, *args, **kwargs):
 		title = kwargs['title']
 		category = Category.objects.all().get(title=title)
-		category_serializer = CategorySerializer(category).data
-		return Response({"Category": category_serializer}, status=status.HTTP_200_OK)
+		category_serializer = CategorySerializer(category, context={"request": request}).data
+		products = Product.objects.filter(category=category)
+		products_serializer = ProductSerializer(products, many=True, context={"request": request}).data
+		return Response({"Category": category_serializer, 'Products': products_serializer}, status=status.HTTP_200_OK)
+
+
+
+class CategoryTitleWomenDetailView(APIView):
+	authentication_classes = []
+	serializer_class = CustomCollectionSerializer
+	model = CustomCollection
+
+	def get(self,request, *args, **kwargs):
+		title = kwargs['title']
+		category = Category.objects.all().get(title=title)
+		category_serializer = CategorySerializer(category, context={"request": request}).data
+		products = Product.objects.filter(category=category, extra_tag="WOMEN")
+		products_serializer = ProductSerializer(products, many=True, context={"request": request}).data
+		return Response({"Category": category_serializer, 'Products': products_serializer}, status=status.HTTP_200_OK)
+
+
+
+
+
+class CategoryTitleMenDetailView(APIView):
+	authentication_classes = []
+	serializer_class = CustomCollectionSerializer
+	model = CustomCollection
+
+	def get(self,request, *args, **kwargs):
+		title = kwargs['title']
+		category = Category.objects.all().get(title=title)
+		category_serializer = CategorySerializer(category, context={"request": request}).data
+		products = Product.objects.filter(category=category, extra_tag="MEN")
+		products_serializer = ProductSerializer(products, many=True, context={"request": request}).data
+		return Response({"Category": category_serializer, 'Products': products_serializer}, status=status.HTTP_200_OK)
+
+
+
+
+class CategoryTitleKidsDetailView(APIView):
+	authentication_classes = []
+	serializer_class = CustomCollectionSerializer
+	model = CustomCollection
+
+	def get(self,request, *args, **kwargs):
+		title = kwargs['title']
+		category = Category.objects.all().get(title=title)
+		category_serializer = CategorySerializer(category, context={"request": request}).data
+		products = Product.objects.filter(category=category, extra_tag="KIDS")
+		products_serializer = ProductSerializer(products, many=True, context={"request": request}).data
+		return Response({"Category": category_serializer, 'Products': products_serializer}, status=status.HTTP_200_OK)
+
+
+
+
 
 
 class CustomCollectionTitleDetailView(APIView):
@@ -135,8 +256,12 @@ class CustomCollectionTitleDetailView(APIView):
 	def get(self,request, *args, **kwargs):
 		title = kwargs['title']
 		collection = CustomCollection.objects.all().get(title=title)
-		collection_serializer = CustomCollectionSerializer(collection).data
+		collection_serializer = CustomCollectionSerializer(collection, context={"request": request}).data
 		return Response({"Collection": collection_serializer}, status=status.HTTP_200_OK)
+
+
+
+
 
 
 class ProductsPerExtraTag(APIView):
@@ -145,24 +270,27 @@ class ProductsPerExtraTag(APIView):
 
 		women = dict()
 		info_to_serialize = Category.objects.filter(product_set__extra_tag='WOMEN').distinct().only("title", "id")
-		women['category'] = CategorySimpleSerializerFilter(info_to_serialize, many=True).data
+		women['category'] = CategorySimpleSerializerFilter(info_to_serialize, many=True, context={"request":request}).data
 		info_to_serialize = CustomCollection.objects.filter(products_per_collection_set__extra_tag='WOMEN').distinct().only("title", "id")
-		women['collection'] = CustomCollectionSimpleSerializerFilter(info_to_serialize, many=True).data
+		women['collection'] = CustomCollectionSimpleSerializerFilter(info_to_serialize, many=True, context={"request":request}).data
 
 		men = dict()
 		info_to_serialize = Category.objects.filter(product_set__extra_tag='MEN').distinct().only("title", "id")
-		men['category'] = CategorySimpleSerializerFilter(info_to_serialize, many=True).data
-		print(CategorySimpleSerializer(info_to_serialize, many=True))
+		men['category'] = CategorySimpleSerializerFilter(info_to_serialize, many=True, context={"request":request}).data
 		info_to_serialize = CustomCollection.objects.filter(products_per_collection_set__extra_tag='MEN').distinct().only("title", "id")
-		men['collection'] = CustomCollectionSimpleSerializerFilter(info_to_serialize, many=True).data
+		men['collection'] = CustomCollectionSimpleSerializerFilter(info_to_serialize, many=True, context={"request":request}).data
 
 		kids = dict()
 		info_to_serialize = Category.objects.filter(product_set__extra_tag='KIDS').distinct().only("title", "id")
-		kids['category'] = CategorySimpleSerializerFilter(info_to_serialize, many=True).data
+		kids['category'] = CategorySimpleSerializerFilter(info_to_serialize, many=True, context={"request":request}).data
 		info_to_serialize = CustomCollection.objects.filter(products_per_collection_set__extra_tag='KIDS').distinct().only("title", "id")
-		kids['collection'] = CustomCollectionSimpleSerializerFilter(info_to_serialize, many=True).data
+		kids['collection'] = CustomCollectionSimpleSerializerFilter(info_to_serialize, many=True, context={"request":request}).data
 
 		return Response({"women": women, "men":men, "kids":kids}, status=status.HTTP_200_OK)
+
+
+
+
 
 
 class CartView(APIView):
@@ -180,10 +308,17 @@ class CartView(APIView):
 
 		try:
 			cart = Cart.objects.get(ip_address = ipaddress, last=True, token = token)
+			if Coupon.objects.filter(cart=cart).first() != None:
+				coupon = Coupon.objects.get(cart=cart)
+				coupon_serializer = CouponSerializer(coupon, context={"request": request}).data
+			else:
+				coupon = None
+				coupon_serializer = None
+
 			cart = CartSerializer(cart, context={"request": request}).data
-			return Response({"Cart": cart}, status=status.HTTP_200_OK)
+			return Response({"Cart": cart, "Coupon": coupon_serializer}, status=status.HTTP_200_OK)
 		except:
-			return Response({"Cart":"Error"}, status=status.HTTP_400_BAD_REQUEST)
+			return Response({"Cart":"Error", Coupon: "None"}, status=status.HTTP_400_BAD_REQUEST)
 
 	# Add product to the cart
 	def post(self, request, format=None, token=None):
@@ -236,12 +371,19 @@ class CartView(APIView):
 				product.cart = cart
 				product.save()
 
+			if Coupon.objects.filter(cart=cart).first() != None:
+				coupon = Coupon.objects.get(cart=cart)
+				coupon_serializer = CouponSerializer(coupon, context={"request": request}).data
+			else:
+				coupon = None
+				coupon_serializer = None
+
 			cart = CartSerializer(cart, context={"request": request}).data
 
-			return Response({"Cart":cart}, status=status.HTTP_200_OK)
+			return Response({"Cart":cart, "Coupon": coupon_serializer}, status=status.HTTP_200_OK)
 
 		else:
-			return Response({"Cart": "Error"}, status=status.HTTP_400_BAD_REQUEST)
+			return Response({"Cart": "Error", "Coupon": None}, status=status.HTTP_400_BAD_REQUEST)
 
 
 	# Delete cart
@@ -255,17 +397,67 @@ class CartView(APIView):
 
 		try:
 			cart = Cart.objects.get(ip_address = ipaddress, last=True, token=token)
-			print("1")
-
 			products_from_cart = ProductVariation.objects.filter(cart__id=cart.id)
-			print("2")
 			for product_from_cart in products_from_cart:
 				product_from_cart.product.amount_sold -= product_from_cart.cant
-			print("3")
 			cart.delete()
-			return Response({"Cart":None}, status=status.HTTP_200_OK)
+
+			return Response({"Cart": None, "Coupon": None}, status=status.HTTP_200_OK)
 		except:
 			return Response({"Cart": None}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+
+
+
+
+class AddCoupon(APIView):
+
+	# Retrieve cart and add Coupon
+	def post(self, request, token, format=None):
+		data = request.data
+
+		x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+
+		if x_forwarded_for:
+			ipaddress = x_forwarded_for.split(',')[-1].strip()
+		else:
+			ipaddress = request.META.get('REMOTE_ADDR')
+
+		try:
+			cart = Cart.objects.get(ip_address = ipaddress, last=True, token = token)
+
+			user_email = data['user_email']
+			code = data['code']
+			if Coupon.objects.filter(user_email = user_email, code=code, taken=False).first() != None:
+				coupon = Coupon.objects.get(user_email = user_email, code=code, taken=False)
+				coupon.taken=True
+				coupon.cart = cart
+				coupon = coupon.save()
+				coupon_serializer = CouponSerializer(coupon, context={"request": request}).data
+				cart = CartSerializer(cart, context={"request": request}).data
+				return Response({"Message": "Success", "Cart": cart, "Coupon": coupon_serializer},
+								status=status.HTTP_200_OK)
+			else:
+				cart = CartSerializer(cart, context={"request": request}).data
+				return Response({"Message": "Success", "Cart": cart, "Coupon": None}, status=status.HTTP_200_OK)
+		except:
+			return Response({"Message": "Success", "Cart": None}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -274,6 +466,12 @@ class ProductVariationListView(ListAPIView):
 	serializer_class = ProductVariationSerializer
 	model = ProductVariation
 	queryset = ProductVariation.objects.all()
+
+	def get_serializer_context(self):
+		context = super(ProductVariationListView, self).get_serializer_context()
+		context.update({"request": self.request})
+		return context
+
 
 
 
@@ -297,21 +495,39 @@ class ProductVariationView(APIView):
 			cart.cost = cart.cost + (product.price - original_price)
 			cart.save()
 
+			if Coupon.objects.filter(cart=cart).first() != None:
+				coupon = Coupon.objects.get(cart=cart)
+				coupon_serializer = CouponSerializer(coupon, context={"request": request}).data
+			else:
+				coupon = None
+				coupon_serializer = None
+
 			cart = CartSerializer(cart, context={"request": request}).data
-			return Response({"Cart": cart}, status=status.HTTP_200_OK)
+			return Response({"Cart": cart, "Coupon": coupon_serializer}, status=status.HTTP_200_OK)
 		else:
-			return Response({"Cart": None}, status=status.HTTP_400_BAD_REQUEST)
+			return Response({"Cart": None, "Coupon": None}, status=status.HTTP_400_BAD_REQUEST)
 
 
 	# delete product from cart
 	def delete(self, request, id, format=None):
 		product = ProductVariation.objects.get(id = id)
 		cart = product.cart
-		cart = CartSerializer(cart, context={"request": request}).data
 		product.product.amount_sold -= product.cant
+		cart.cost = cart.cost - product.price
+		cart.save()
 		product.save()
 		product.delete()
-		return Response({"Cart": cart}, status=status.HTTP_200_OK)
+		if Coupon.objects.filter(cart=cart).first() != None:
+			coupon = Coupon.objects.get(cart=cart)
+			coupon_serializer = CouponSerializer(coupon, context={"request": request}).data
+		else:
+			coupon = None
+			coupon_serializer = None
+		cart = CartSerializer(cart, context={"request": request}).data
+		return Response({"Cart": cart, "Coupon": coupon_serializer}, status=status.HTTP_200_OK)
+
+
+
 
 
 
@@ -331,7 +547,7 @@ class CheckoutView(APIView):
 			cart = Cart.objects.get(ip_address = ipaddress, last=True, token=cart_token)
 			order = Order.objects.create(cart=cart)
 
-			order_serializer = OrderSerializer(order, data=request.data['order'], partial=True)
+			order_serializer = OrderSerializer(order, data=request.data['order'], partial=True, context={"request":request})
 
 			order_serializer.is_valid(raise_exception=True)
 			order = order_serializer.save()
@@ -350,7 +566,22 @@ class CheckoutView(APIView):
 				},
 			)
 
-			amount = int(order.get_total_price() * 100)
+			amount = int(order.get_total_price())
+
+
+			if Coupon.objects.filter(cart=cart).first() != None:
+				coupon = Coupon.objects.get(cart=cart)
+				items_in_cart = ProductVariation.objects.filter(cart=cart).values('cant')
+				amount_of_items = 0
+				for item in items_in_cart:
+					amount_of_items += item['cant']
+				if amount_of_items >= coupon.how_many_items:
+					if coupon.discount_type == "POR CIENTO":
+						amount = amount - (amount * coupon.discount)
+					else:
+						amount = amount - (coupon.discount)
+
+			amount = int((amount + (amount * 0.07)) * 100)
 
 			charge = stripe.Charge.create(
 				amount=amount,
@@ -360,7 +591,7 @@ class CheckoutView(APIView):
 
 
 			stripe_charge_id = charge['id']
-			amount  = amount/100
+			amount = amount/100
 			payment = Payment(email = order.email, ip_address=order.cart.ip_address, stripe_charge_id=stripe_charge_id, amount=amount)
 			payment.save()
 			order.ordered = True
@@ -368,30 +599,6 @@ class CheckoutView(APIView):
 			order.save()
 			cart.last = False
 			cart.save()
-
-			# Send Email to user
-			# email_subject="Purchase made."
-			# message=render_to_string('purchase-made.html', {
-			#     'user': order.user_email,
-			#     'image': order.product.product.image,
-			#     'amount_of_product': str(order.product.amount),
-			#     'total_amount':str("{:.2f}".format(order.get_total_price())),
-			# })
-			# to_email = order.user_email
-			# email = EmailMultiAlternatives(email_subject, to=[to_email])
-			# email.attach_alternative(message, "text/html")
-			# email.send()
-
-			# admin_message=render_to_string('admin-purchase-made.html',{
-			#     'user': order.user_email,
-			#     'order': order.id,
-			#     'current_admin_domain':current_admin_domain,
-			# })
-
-			# to_admin_email = admin_email
-			# email = EmailMultiAlternatives(email_subject, to=[to_admin_email])
-			# email.attach_alternative(admin_message, "text/html")
-			# email.send()
 
 			return Response({"Result": "Success"}, status=status.HTTP_200_OK)
 
@@ -413,6 +620,83 @@ class CheckoutView(APIView):
 
 		except stripe.error.StripeError as e:
 			return Response({"Result":"Something went wrong during payment"}, status=status.HTTP_400_BAD_REQUEST)
+
+		except:
+			return Response({"Result":"Error during payment"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ShippingInfoView(APIView):
+
+	def post(self, request, cart_token, format=None):
+
+		try:
+			x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+
+			if x_forwarded_for:
+				ipaddress = x_forwarded_for.split(',')[-1].strip()
+			else:
+				ipaddress = request.META.get('REMOTE_ADDR')
+
+			cart = Cart.objects.get(ip_address=ipaddress, last=True, token=cart_token)
+
+
+			try:
+				order = Order.objects.get(cart=cart)
+				order_serializer = OrderSerializer(order, data=request.data['order'], partial=True,
+												   context={"request": request})
+
+				order_serializer.is_valid(raise_exception=True)
+				order = order_serializer.save()
+				return Response({"Result": "Success"}, status=status.HTTP_200_OK)
+			except:
+
+				order = Order.objects.create(cart=cart)
+
+
+				order_serializer = OrderSerializer(order, data=request.data['order'], partial=True,
+												   context={"request": request})
+
+				order_serializer.is_valid(raise_exception=True)
+				order = order_serializer.save()
+				return Response({"Result": "Success"}, status=status.HTTP_200_OK)
+
+		except:
+			return Response({"Result":"Error during payment"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+class OderCheckoutPaypalView(APIView):
+
+	def post(self, request, cart_token, format=None):
+
+
+		try:
+			x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+
+			if x_forwarded_for:
+				ipaddress = x_forwarded_for.split(',')[-1].strip()
+			else:
+				ipaddress = request.META.get('REMOTE_ADDR')
+
+			cart = Cart.objects.get(ip_address=ipaddress, last=True, token=cart_token)
+			order = Order.objects.get(cart=cart)
+			stripe_charge_id = request.data['online_payment_id']
+			amount = float(request.data['amount'])
+			if not order.email:
+				order.email="None"
+				order.save()
+			payment = Payment(email=order.email, ip_address=order.cart.ip_address, stripe_charge_id=stripe_charge_id,
+							  amount=amount)
+
+			payment.save()
+			order.ordered = True
+			order.payment = payment
+			order.save()
+			cart.last = False
+			cart.save()
+			return Response({"Result": "Success"}, status=status.HTTP_200_OK)
 
 		except:
 			return Response({"Result":"Error during payment"}, status=status.HTTP_400_BAD_REQUEST)
