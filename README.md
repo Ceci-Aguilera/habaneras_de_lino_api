@@ -52,11 +52,8 @@ To run this application locally do the following
    sudo service postgresql start
    ```
 
-   
 
-3. To test on Heroku change the settings file in settings/__init__.py to heroku_test.py and to run locally to dev.py (default)
-
-4. Set local environment variables on a .env file inside settings with the following variables:
+3. Set local environment variables on a .env file inside settings with the following variables:
 
    - DB name, user, password, host, port.
    - Stripe keys.
@@ -64,7 +61,7 @@ To run this application locally do the following
    - Django secret key.
    - Cloudinary credentials.
 
-5. Run the migrations and finally run the app locally:
+4. Run the migrations and finally run the app locally:
 
    ```bash
    python manage.py makemigrations
