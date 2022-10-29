@@ -537,6 +537,7 @@ class CheckoutView(APIView):
 	def post(self, request, cart_token, format=None):
 
 		try:
+		# if True:
 			x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
 
 			if x_forwarded_for:
@@ -545,12 +546,7 @@ class CheckoutView(APIView):
 				ipaddress = request.META.get('REMOTE_ADDR')
 			
 			cart = Cart.objects.get(ip_address = ipaddress, last=True, token=cart_token)
-			order = Order.objects.create(cart=cart)
-
-			order_serializer = OrderSerializer(order, data=request.data['order'], partial=True, context={"request":request})
-
-			order_serializer.is_valid(raise_exception=True)
-			order = order_serializer.save()
+			order = Order.objects.get(cart=cart)
 
 			card_num = request.data['card_num']
 			exp_month = request.data['exp_month']
@@ -566,27 +562,29 @@ class CheckoutView(APIView):
 				},
 			)
 
-			amount = int(order.get_total_price())
+			amount = float(request.data['amount'])
 
+			amount = int(amount * 100)
 
-			if Coupon.objects.filter(cart=cart).first() != None:
-				coupon = Coupon.objects.get(cart=cart)
-				items_in_cart = ProductVariation.objects.filter(cart=cart).values('cant')
-				amount_of_items = 0
-				for item in items_in_cart:
-					amount_of_items += item['cant']
-				if amount_of_items >= coupon.how_many_items:
-					if coupon.discount_type == "POR CIENTO":
-						amount = amount - (amount * coupon.discount)
-					else:
-						amount = amount - (coupon.discount)
-
-			amount = int((amount + (amount * 0.07)) * 100)
+			shipping_dictionary = {
+				'address': {
+					'city': None,
+					'country': None,
+					'line1':order.address1,
+					'line2': None,
+					'postal_code': None,
+					'state': None,
+				},
+				'name': order.user_first_name + " " + order.user_last_name,
+				'phone': order.phone if order.phone else '---'
+			}
 
 			charge = stripe.Charge.create(
 				amount=amount,
 				currency="usd",
-				source=token
+				source=token,
+				shipping=shipping_dictionary,
+				receipt_email=order.email
 			)
 
 
