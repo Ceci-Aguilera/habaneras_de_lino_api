@@ -26,9 +26,9 @@
 __Habaneras de Lino__ is an online store to buy linen and cotton clothes that offers its customers an experience of comfort, luxury ,and modernity. The clients can filter the clothing by category, collection, and other characteristics, as well as customize the product (set color, size, sleeve cut, ...), and save them in their cart as well as apply coupons for discount.
 
 __New Version Now Availeble:__ To see the latest version of __Habaneras de Lino__, please visit the repo [habaneras-de-lino-drf-api](). It contains an improved and more intuitive Custom Admin Interface, and better structured API design.
-    - [Link to the Backend of Habaneras de Lino Version 2](https://github.com/Ceci-Aguilera/habaneras-de-lino-drf-api)
-    - [Link to the Frontend of Habaneras de Lino Version 2](https://github.com/Ceci-Aguilera/habaneras-de-lino-frontend-v2)
-    - [Link to Client Website of Habaneras de Lino Version 2](https://habanerasdelino.com)
+- [Link to the Backend of Habaneras de Lino Version 2](https://github.com/Ceci-Aguilera/habaneras-de-lino-drf-api)
+- [Link to the Frontend of Habaneras de Lino Version 2](https://github.com/Ceci-Aguilera/habaneras-de-lino-frontend-v2)
+- [Link to Client Website of Habaneras de Lino Version 2](https://habanerasdelino.com)
 
 <a name="useful_notes"></a>
 ## Useful Notes
